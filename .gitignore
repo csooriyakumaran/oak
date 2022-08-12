@@ -104,10 +104,11 @@ obj/
 # Ignore code-workspaces
 *.code-workspace
 
-# venturi 
-bin
-bin-int
+# oak 
+oak/bin
+oak/bin-int
+oak/build
 
-Makefile
-*.make
+oak/Makefile
+oak/*.make
 # End of https://www.toptal.com/developers/gitignore/api/c++,visualstudiocode,c,premake-gmake
