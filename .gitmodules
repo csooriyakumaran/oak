@@ -12,4 +12,4 @@
 	url = https://github.com/gabime/spdlog
 [submodule "vendor/implot"]
 	path = vendor/implot
-	url = https://github.com/epezent/implot
+	url = https://github.com/csooriyakumaran/implot
