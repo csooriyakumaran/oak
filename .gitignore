@@ -105,12 +105,9 @@ obj/
 *.code-workspace
 
 # venturi 
-oak/bin
-oak/bin-int
-oak/vendor/implot/Makefile
+bin
+bin-int
 
-oak/bin
-oak/build
-oak/Makefile
-oak/*.make
+Makefile
+*.make
 # End of https://www.toptal.com/developers/gitignore/api/c++,visualstudiocode,c,premake-gmake
