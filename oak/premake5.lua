@@ -19,6 +19,7 @@ project "Oak"
         "../vendor/ImGui",
         "../vendor/implot",
         "../vendor/glfw/include",
+        "../vendor/glm",
         "../vendor/stb",
         "../vendor/spdlog/include",
         "C:/VulkanSDK/1.3.216.0/Include",
@@ -44,6 +45,9 @@ project "Oak"
        
         "{MKDIR} build/" ..outputdir .."/GLFW-obj",
         "CHDIR .. && ar -xv vendor/glfw/bin/" .. outputdir .. "/GLFW/GLFW.lib --output oak/build/" .. outputdir .. "/GLFW-obj",
+        
+        -- "{MKDIR} build/" ..outputdir .."/gdi32-obj",
+        -- "ar -xv C:/msys64/mingw64/lib/libgdi32.a build" .. outputdir .. "/gdi32-obj",
        
         "ar -rcs %{cfg.buildtarget.abspath} build/" .. outputdir .."/ImPlot-obj/*.o build/" .. outputdir .."/GLFW-obj/*.o build/" .. outputdir .."/oak-obj/*.o",
 
@@ -52,6 +56,7 @@ project "Oak"
 
         "{RMDIR} build/" ..outputdir .."/ImPlot-obj",
         "{RMDIR} build/" ..outputdir .."/GLFW-obj",
+        -- "{RMDIR} build/" ..outputdir .."/gdi32-obj",
         "{RMDIR} build/" ..outputdir .."/oak-obj",
     }
 
