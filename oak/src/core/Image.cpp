@@ -1,9 +1,9 @@
-#include "Image.h"
+#include "core/Application.h"
+#include "core/Image.h"
 
 #include "imgui.h"
 #include "backends/imgui_impl_vulkan.h"
 
-#include "Application.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"

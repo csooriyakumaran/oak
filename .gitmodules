@@ -1,0 +1,15 @@
+[submodule "vendor/ImGui"]
+	path = vendor/ImGui
+	url = https://github.com/TheCherno/ImGui
+[submodule "vendor/glfw"]
+	path = vendor/glfw
+	url = https://github.com/TheCherno/glfw
+[submodule "vendor/stb"]
+	path = vendor/stb
+	url = https://github.com/nothings/stb
+[submodule "vendor/spdlog"]
+	path = vendor/spdlog
+	url = https://github.com/gabime/spdlog
+[submodule "vendor/implot"]
+	path = vendor/implot
+	url = https://github.com/epezent/implot

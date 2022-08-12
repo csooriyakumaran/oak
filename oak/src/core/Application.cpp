@@ -1,4 +1,4 @@
-#include "Application.h"
+#include "core/Application.h"
 
 //
 // Adapted from Dear ImGui Vulkan example
@@ -17,7 +17,7 @@
 #include <iostream>
 
 // Emedded font
-#include "ImGui/Roboto-Regular.embed"
+#include "imgui/Roboto-Regular.embed"
 
 extern bool g_ApplicationRunning;
 
