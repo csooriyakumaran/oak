@@ -1,9 +1,9 @@
-workspace "Oak"
+workspace "oakApp"
     architecture "x64"
     configurations { "Debug", "Release", "Dist" }
+    startproject "oakApp"
     
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
-VULKAN_SDK = os.getenv("VULKAN_SDK")
 
-include "dependencies.lua"
+include "oakExternal.lua"
 include "oak"
