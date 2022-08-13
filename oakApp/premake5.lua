@@ -27,7 +27,7 @@ project "oakApp"
 
     filter "system:windows"
        systemversion "latest"
-       defines { "WL_PLATFORM_WINDOWS" }
+       defines { "OAK_PLATFORM_WINDOWS" }
 
     filter "configurations:Debug"
        defines { "WL_DEBUG" }
