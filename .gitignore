@@ -109,6 +109,10 @@ oak/bin
 oak/bin-int
 oak/build
 
+vendor/*/bin
+vendor/*/build
+vendor/*/bin-int
+
 oak/Makefile
 oak/*.make
 # End of https://www.toptal.com/developers/gitignore/api/c++,visualstudiocode,c,premake-gmake
