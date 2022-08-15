@@ -116,3 +116,9 @@ vendor/*/bin-int
 oak/Makefile
 oak/*.make
 # End of https://www.toptal.com/developers/gitignore/api/c++,visualstudiocode,c,premake-gmake
+
+# Files
+*.vcxproj
+*.vcxproj.user
+*.vcxproj.filters
+*.sln

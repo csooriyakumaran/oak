@@ -1,4 +1,5 @@
 #include "oakpch.h"
+#include "oak/core/Base.h"
 #include "oak/core/window.h"
 
 #ifdef OAK_PLATFORM_WINDOWS
@@ -8,12 +9,12 @@
 
 namespace Oak
 {
-	std::unique_ptr<Window> Window::Create(const WindowProps& props)
+	Scope<Window> Window::Create(const WindowProps& props)
 	{
 	#ifdef OAK_PLATFORM_WINDOWS
-		return std::make_unique<WindowsWindow>(props);
+		return CreateScope<WindowsWindow>(props);
 	#else
-		// HZ_CORE_ASSERT(false, "Unknown platform!");
+		OAK_CORE_CRITICAL("Unknown platform!");
 		return nullptr;
 	#endif
 	}

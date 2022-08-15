@@ -1,4 +1,5 @@
 #include "oakpch.h"
+#include "oak/core/Base.h"
 #include "platform/OpenGL/OpenGLContext.h"
 
 
@@ -15,6 +16,11 @@ namespace Oak {
 
 		glfwMakeContextCurrent(m_WindowHandle);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+
+		OAK_CORE_INFO("OpenGL Info:");
+		OAK_CORE_INFO("  Vendor: {0}", glGetString(GL_VENDOR));
+		OAK_CORE_INFO("  Renderer: {0}", glGetString(GL_RENDERER));
+		OAK_CORE_INFO("  Version: {0}", glGetString(GL_VERSION));
 
 	}
 

@@ -1,3 +1,4 @@
+#include "oakpch.h"
 #include "Random.h"
 
 namespace Oak {

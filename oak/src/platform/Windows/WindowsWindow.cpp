@@ -1,4 +1,6 @@
 #include "oakpch.h"
+#include "oak/core/Base.h"
+
 #include "platform/Windows/WindowsWindow.h"
 
 #include "oak/core/Input.h"
@@ -6,6 +8,8 @@
 #include "oak/events/ApplicationEvent.h"
 #include "oak/events/MouseEvent.h"
 #include "oak/events/KeyEvent.h"
+
+#include "oak/renderer/Renderer.h"
 
 #include "platform/OpenGL/OpenGLContext.h"
 
@@ -33,13 +37,20 @@ namespace Oak {
         m_Data.Width = props.Width;
         m_Data.Height = props.Height;
 
+		OAK_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
+
 	    if (s_GLFWWindowCount == 0)
 		{
 			int success = glfwInit();
+			OAK_CORE_ASSERT(success, "GLFW failed to initialize");
 			glfwSetErrorCallback(GLFWErrorCallback);
 		}
 
         {
+		#if defined(OAK_DEBUG)
+			if (Renderer::GetAPI() == RendererAPI::API::OpenGL)
+				glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+		#endif
             m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 			++s_GLFWWindowCount;
         }
@@ -77,6 +88,7 @@ namespace Oak {
 				case GLFW_PRESS:
 				{
 					KeyPressedEvent event(key, 0);
+					OAK_CORE_INFO("{0}", event);
 					data.EventCallback(event);
 					break;
 				}

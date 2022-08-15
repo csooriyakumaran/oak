@@ -12,7 +12,7 @@ namespace Oak {
 
     float Time::GetTime()
 	{
-		return glfwGetTime();
+		return (float)glfwGetTime();
 	}
 
 } 

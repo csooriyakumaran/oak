@@ -1,12 +1,15 @@
 #pragma once
 
 #include "oakpch.h"
+#include "oak/core/Base.h"
 
 #include "oak/core/Window.h"
 #include "oak/core/LayerStack.h"
 
 #include "oak/events/Event.h"
 #include "oak/events/ApplicationEvent.h"
+
+#include "oak/imgui/ImGuiLayer.h"
 
 
 #include "Oak/core/Timestep.h"
@@ -30,14 +33,17 @@ namespace Oak {
 
         void OnEvent(Event& e);
         void PushLayer(Layer* layer);
+        void PushOverlay(Layer *layer);
 
         Window& GetWindow() { return *m_Window;}
 
         void Close();
 
-        static Application& get() { return *s_Instance;}
+        ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
 
-        const ApplicationSpecification& getSpecification() const { return m_Specification;}
+        static Application& Get() { return *s_Instance;}
+
+        const ApplicationSpecification& GetSpecification() const { return m_Specification;}
 
     private:
         void Run();
@@ -46,7 +52,8 @@ namespace Oak {
 
     private:
         ApplicationSpecification m_Specification;
-        std::unique_ptr<Window> m_Window;
+        Scope<Window> m_Window;
+        ImGuiLayer* m_ImGuiLayer;
         bool m_Running = true;
         bool m_Minimized = false;
         LayerStack m_LayerStack;
@@ -54,7 +61,7 @@ namespace Oak {
 
     private:
         static Application* s_Instance;
-        friend int Oak::Main(int argc, char** argv);
+        friend int Main(int argc, char** argv);
 
 
     };

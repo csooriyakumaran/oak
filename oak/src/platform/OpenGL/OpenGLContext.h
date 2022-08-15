@@ -2,11 +2,11 @@
 #include "oakpch.h"
 #include "oak/renderer/GraphicsContext.h"
 
-struct GLFWwindow;
 
 #include <Glad/glad.h>
 #include <GLFW/glfw3.h>
 
+struct GLFWwindow;
 
 namespace Oak {
 

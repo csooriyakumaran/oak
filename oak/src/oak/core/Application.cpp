@@ -2,6 +2,8 @@
 #include "oak/core/Application.h"
 #include "oak/core/Base.h"
 
+#include "oak/renderer/Renderer.h"
+
 #include "oak/core/Input.h"
 #include "oak/utils/PlatformUtils.h"
 
@@ -14,12 +16,18 @@ namespace Oak {
     Application::Application(const ApplicationSpecification& specification)
         : m_Specification(specification)
     {
+		s_Instance = this;
         // set working directory
         if (!m_Specification.workingDirectory.empty()) 
             std::filesystem::current_path(m_Specification.name);
 
         m_Window = Window::Create(WindowProps(m_Specification.name));
         m_Window->SetEventCallback(OAK_BIND_EVENT_FN(Application::OnEvent));
+
+		Renderer::Init();
+
+		m_ImGuiLayer = new ImGuiLayer;
+		PushLayer(m_ImGuiLayer);
         
     }
 
@@ -30,6 +38,14 @@ namespace Oak {
     void Application::PushLayer(Layer* layer)
     {
         m_LayerStack.PushLayer(layer);
+		layer->OnAttach();
+
+    }
+
+	 void Application::PushOverlay(Layer* layer)
+    {
+        m_LayerStack.PushOverlay(layer);
+		layer->OnAttach();
 
     }
 
@@ -73,14 +89,12 @@ namespace Oak {
 						layer->OnUpdate(timestep);
 				}
 
-// a				m_ImGuiLayer->Begin();
-// 				{
-// 					HZ_PROFILE_SCOPE("LayerStack OnImGuiRender");
-
-// 					for (Layer* layer : m_LayerStack)
-// 						layer->OnImGuiRender();
-// 				}
-// 				m_ImGuiLayer->End();
+				m_ImGuiLayer->Begin();
+				{
+					for (Layer* layer : m_LayerStack)
+						layer->OnUIRender();
+				}
+				m_ImGuiLayer->End();
 			}
 
 			m_Window->OnUpdate();
