@@ -31,7 +31,7 @@
 // #include "oak/renderer/Buffer.h"
 // #include "oak/renderer/Shader.h"
 // #include "oak/renderer/Framebuffer.h"
-// #include "oak/renderer/Texture.h"
+#include "oak/renderer/Texture.h"
 // #include "oak/renderer/VertexArray.h"
 
 // #include "oak/renderer/OrthographicCamera.h"
