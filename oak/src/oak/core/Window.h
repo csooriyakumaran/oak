@@ -35,15 +35,21 @@ namespace Oak {
 
 		virtual uint32_t GetWidth() const = 0;
 		virtual uint32_t GetHeight() const = 0;
+		virtual uint32_t GetPosX() const = 0 ;
+		virtual uint32_t GetPosY() const = 0 ;
 
 		// Window attributes
 		virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
 		virtual void SetVSync(bool enabled) = 0;
 		virtual bool IsVSync() const = 0;
+		virtual void Minimize() = 0;
+		virtual void Maximize() = 0;
+		virtual void Restore() = 0;
+		virtual void Move(int dx, int dy) = 0;
 
 		virtual void* GetNativeWindow() const = 0;
 
-		static std::unique_ptr<Window> Create(const WindowProps& props = WindowProps());
+		static Scope<Window> Create(const WindowProps& props = WindowProps());
 	};
 
 }

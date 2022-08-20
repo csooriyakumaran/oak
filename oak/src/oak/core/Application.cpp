@@ -14,20 +14,24 @@ namespace Oak {
     Application* Application::s_Instance = nullptr;
 
     Application::Application(const ApplicationSpecification& specification)
-        : m_Specification(specification)
+        : m_Specification(specification) 
     {
 		s_Instance = this;
         // set working directory
-        if (!m_Specification.workingDirectory.empty()) 
-            std::filesystem::current_path(m_Specification.name);
+        if (m_Specification.workingDirectory.empty()) 
+			m_Specification.workingDirectory = std::filesystem::current_path().string();
+		
+		OAK_CORE_WARN("{}", m_Specification.workingDirectory);
+
 
         m_Window = Window::Create(WindowProps(m_Specification.name));
         m_Window->SetEventCallback(OAK_BIND_EVENT_FN(Application::OnEvent));
+		m_Window->Maximize();
 
 		Renderer::Init();
 
-		m_ImGuiLayer = new ImGuiLayer;
-		PushLayer(m_ImGuiLayer);
+		m_ImGuiBaseLayer = new ImGuiBaseLayer;
+		PushLayer(m_ImGuiBaseLayer);
         
     }
 
@@ -61,6 +65,9 @@ namespace Oak {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(OAK_BIND_EVENT_FN(Application::OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(OAK_BIND_EVENT_FN(Application::OnWindowResize));
+		dispatcher.Dispatch<WindowRestoreEvent>(OAK_BIND_EVENT_FN(Application::OnWindowRestore));
+		dispatcher.Dispatch<WindowMinimizeEvent>(OAK_BIND_EVENT_FN(Application::OnWindowMinimize));
+		dispatcher.Dispatch<WindowMaximizeEvent>(OAK_BIND_EVENT_FN(Application::OnWindowMaximize));
 
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
 		{
@@ -89,12 +96,12 @@ namespace Oak {
 						layer->OnUpdate(timestep);
 				}
 
-				m_ImGuiLayer->Begin();
+				m_ImGuiBaseLayer->Begin();
 				{
 					for (Layer* layer : m_LayerStack)
 						layer->OnUIRender();
 				}
-				m_ImGuiLayer->End();
+				m_ImGuiBaseLayer->End();
 			}
 
 			m_Window->OnUpdate();
@@ -119,6 +126,30 @@ namespace Oak {
 		m_Minimized = false;
 		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
 
+		return false;
+	}
+	bool Application::OnWindowMinimize(WindowMinimizeEvent& e)
+	{
+		OAK_WARN("Application::OnWindowMinimize(WindowMinimizeEvent& e): Event {}", e.ToString());
+		m_Minimized = true;
+		m_Maximized = false;
+		m_Restored  = false;
+		return false;
+	}
+	bool Application::OnWindowMaximize(WindowMaximizeEvent& e)
+	{
+		OAK_WARN("Application::OnWindowMaximize(WindowMaximizeEvent& e): Event {}", e.ToString());
+		m_Minimized = false;
+		m_Maximized = true;
+		m_Restored = false;
+		return false;
+	}
+	bool Application::OnWindowRestore(WindowRestoreEvent& e)
+	{
+		OAK_WARN("Application::OnWindowRestore(WindowRestoreEvent& e): Event {}", e.ToString());
+		m_Minimized = false;
+		m_Maximized = false;
+		m_Restored  = true;
 		return false;
 	}
 

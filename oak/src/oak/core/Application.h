@@ -9,7 +9,7 @@
 #include "oak/events/Event.h"
 #include "oak/events/ApplicationEvent.h"
 
-#include "oak/imgui/ImGuiLayer.h"
+#include "oak/imgui/ImGuiBaseLayer.h"
 
 
 #include "Oak/core/Timestep.h"
@@ -22,8 +22,12 @@ namespace Oak {
 	{
 		std::string name = "Oak App";
         std::string workingDirectory;
-		std::string iconPath = "";
+        bool fullscreen = true;
 	};
+
+
+ 
+
 
     class Application
     {
@@ -36,27 +40,37 @@ namespace Oak {
         void PushOverlay(Layer *layer);
 
         Window& GetWindow() { return *m_Window;}
+        bool IsRunning() {return m_Running;}
+        bool IsMinimized() {return m_Minimized;}
+        bool IsMaximized() {return m_Maximized;}
+        bool IsRestored() { return m_Restored; }
 
         void Close();
 
-        ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
+        ImGuiBaseLayer* GetImGuiBaseLayer() { return m_ImGuiBaseLayer; }
 
         static Application& Get() { return *s_Instance;}
-
         const ApplicationSpecification& GetSpecification() const { return m_Specification;}
 
     private:
         void Run();
         bool OnWindowClose(WindowCloseEvent& e);
         bool OnWindowResize(WindowResizeEvent& e);
+        bool OnWindowMinimize(WindowMinimizeEvent& e);
+        bool OnWindowMaximize(WindowMaximizeEvent& e);
+        bool OnWindowRestore(WindowRestoreEvent& e);
 
     private:
         ApplicationSpecification m_Specification;
         Scope<Window> m_Window;
-        ImGuiLayer* m_ImGuiLayer;
+        ImGuiBaseLayer* m_ImGuiBaseLayer;
+        LayerStack m_LayerStack;
+                
         bool m_Running = true;
         bool m_Minimized = false;
-        LayerStack m_LayerStack;
+        bool m_Maximized = true;
+        bool m_Restored = false;
+        
         float m_LastFrameTime = 0.0f;
 
     private:

@@ -1,5 +1,5 @@
 #include "oakpch.h"
-#include "oak/imgui/ImGuiLayer.h"
+#include "oak/imgui/ImGuiBaseLayer.h"
 
 #include "imgui.h"
 #include "implot.h"
@@ -13,12 +13,12 @@
 
 namespace Oak {
 
-    ImGuiLayer::ImGuiLayer()
+	ImGuiBaseLayer::ImGuiBaseLayer()
         : Layer("ImGuiLayer")
     {
     }
     
-    void ImGuiLayer::OnAttach()
+    void ImGuiBaseLayer::OnAttach()
     {
 
 		// Setup Dear ImGui context
@@ -33,23 +33,25 @@ namespace Oak {
 		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
 		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
 
-
-        float fontSize = 14.0f;// *2.0f;
+		
+        float fontSize = 16.0f;// *2.0f;
 		io.Fonts->AddFontFromFileTTF("assets/fonts/opensans/OpenSans-Bold.ttf", fontSize);
 		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/opensans/OpenSans-Regular.ttf", fontSize);
-
-		// Setup Dear ImGui style
-		ImGui::StyleColorsDark();
-		//ImGui::StyleColorsClassic();
-
 
 		// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
 		ImGuiStyle& style = ImGui::GetStyle();
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
 			style.WindowRounding = 0.0f;
-			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+			style.WindowBorderSize = 0.0f;
+			style.WindowPadding = ImVec2(0.0f, 0.0f);
+			style.Colors[ImGuiCol_WindowBg].w = 0.0f;
 		}
+
+		// Setup Dear ImGui style
+		ImGui::StyleColorsDark();
+		//ImGui::StyleColorsClassic();
+
 
         SetDarkThemeColors();
         
@@ -63,7 +65,7 @@ namespace Oak {
 
     }
 
-    void ImGuiLayer::OnDetach()
+    void ImGuiBaseLayer::OnDetach()
     {
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
@@ -71,7 +73,7 @@ namespace Oak {
 		ImGui::DestroyContext();
     }
     
-	void ImGuiLayer::OnEvent(Event& e)
+	void ImGuiBaseLayer::OnEvent(Event& e)
 	{
 		if (m_BlockEvents)
 		{
@@ -80,17 +82,37 @@ namespace Oak {
 			e.Handled |= e.IsInCategory(EventCategoryKeyboard) & io.WantCaptureKeyboard;
 		}
 	}
-    void ImGuiLayer::Begin()
+    void ImGuiBaseLayer::Begin()
 	{
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+
+		ImGuiViewport* viewport = ImGui::GetMainViewport();
+        ImGui::SetNextWindowPos(viewport->WorkPos);
+        ImGui::SetNextWindowSize(viewport->WorkSize);
+        ImGui::SetNextWindowViewport(viewport->ID);
+		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_AutoHideTabBar | ImGuiDockNodeFlags_PassthruCentralNode;
+		ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+        window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+		window_flags |= ImGuiWindowFlags_NoBackground;
+		window_flags |= ImGuiWindowFlags_NoDocking;
+
+		ImGui::Begin("Main Dockspace",NULL, window_flags);
+
+		ImGuiIO& io = ImGui::GetIO();
+
+		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+		{
+			ImGuiID m_dockspace_id = ImGui::GetID("Main Dockspace");
+			ImGui::DockSpace(m_dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+		}
 	}
 
-    void ImGuiLayer::End()
+    void ImGuiBaseLayer::End()
 	{
-
+		ImGui::End(); //"Main Dockspace"
 		ImGuiIO& io = ImGui::GetIO();
 		Application& app = Application::Get();
 		io.DisplaySize = ImVec2((float)app.GetWindow().GetWidth(), (float)app.GetWindow().GetHeight());
@@ -109,7 +131,7 @@ namespace Oak {
 	}
 
 
-    void ImGuiLayer::SetDarkThemeColors()
+    void ImGuiBaseLayer::SetDarkThemeColors()
     {
         auto& colors = ImGui::GetStyle().Colors;
         colors[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.105f, 0.11f, 1.0f };
@@ -121,6 +143,7 @@ namespace Oak {
         // Buttons
         colors[ImGuiCol_Button] = ImVec4{ 0.2f, 0.205f, 0.21f, 1.0f };
         colors[ImGuiCol_ButtonHovered] = ImVec4{ 0.3f, 0.305f, 0.31f, 1.0f };
+        //colors[ImGuiCol_ButtonHovered] = ImVec4{ 0.1f, 0.105f, 0.11f, 1.0f };
         colors[ImGuiCol_ButtonActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
         // Frame BG
         colors[ImGuiCol_FrameBg] = ImVec4{ 0.2f, 0.205f, 0.21f, 1.0f };
@@ -133,9 +156,12 @@ namespace Oak {
         colors[ImGuiCol_TabUnfocused] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
         colors[ImGuiCol_TabUnfocusedActive] = ImVec4{ 0.2f, 0.205f, 0.21f, 1.0f };
         // Title
-        colors[ImGuiCol_TitleBg] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
-        colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
-        colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+        //colors[ImGuiCol_TitleBg] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+        //colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+        //colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+        colors[ImGuiCol_TitleBg] = colors[ImGuiCol_FrameBg];
+        colors[ImGuiCol_TitleBgActive] = colors[ImGuiCol_FrameBg];
+        colors[ImGuiCol_TitleBgCollapsed] = colors[ImGuiCol_FrameBg];
     }
 
 

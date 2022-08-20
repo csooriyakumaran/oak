@@ -8,11 +8,11 @@
 
 namespace Oak {
 
-	class ImGuiLayer : public Layer
+	class ImGuiBaseLayer : public Layer
 	{
 	public:
-		ImGuiLayer();
-		~ImGuiLayer() = default;
+		ImGuiBaseLayer();
+		~ImGuiBaseLayer() = default;
 
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;

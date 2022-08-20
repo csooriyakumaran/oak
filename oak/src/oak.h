@@ -5,9 +5,12 @@
 #include "oak/core/Base.h"
 
 #include "oak/core/Application.h"
+#include "oak/core/Assert.h"
 #include "oak/core/Layer.h"
+#include "oak/core/Panel.h"
+#include "oak/core/PanelStack.h"
 #include "oak/core/Log.h"
-// #include "oak/core/Assert.h"
+
 
 #include "oak/core/Timestep.h"
 
@@ -16,7 +19,7 @@
 #include "oak/core/MouseCodes.h"
 // #include "oak/renderer/OrthographicCameraController.h"
 
-#include "oak/imgui/ImGuiLayer.h"
+#include "oak/imgui/ImGuiBaseLayer.h"
 
 // #include "oak/Scene/Scene.h"
 // #include "oak/Scene/Entity.h"

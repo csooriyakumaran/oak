@@ -31,35 +31,37 @@ namespace Oak {
         Shutdown();
     }
 
-    void WindowsWindow::Init(const WindowProps& props)
-    {
-        m_Data.Title = props.Title;
-        m_Data.Width = props.Width;
-        m_Data.Height = props.Height;
+	void WindowsWindow::Init(const WindowProps& props)
+	{
+		m_Data.Title = props.Title;
+		m_Data.Width = props.Width;
+		m_Data.Height = props.Height;
+	
 
 		OAK_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
-	    if (s_GLFWWindowCount == 0)
+		if (s_GLFWWindowCount == 0)
 		{
 			int success = glfwInit();
 			OAK_CORE_ASSERT(success, "GLFW failed to initialize");
 			glfwSetErrorCallback(GLFWErrorCallback);
 		}
 
-        {
-		#if defined(OAK_DEBUG)
+		{
+#if defined(OAK_DEBUG)
 			if (Renderer::GetAPI() == RendererAPI::API::OpenGL)
 				glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
-		#endif
-			glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
-            m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+#endif
+			glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+			glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+			m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 			++s_GLFWWindowCount;
-        }
+		}
 
-        m_Context = GraphicsContext::Create(m_Window);
-        m_Context->Init();
+		m_Context = GraphicsContext::Create(m_Window);
+		m_Context->Init();
 
-        glfwSetWindowUserPointer(m_Window, &m_Data);
+		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
 
 		// Set GLFW callbacks
@@ -73,6 +75,17 @@ namespace Oak {
 			data.EventCallback(event);
 		});
 
+		glfwSetWindowPosCallback(m_Window, [](GLFWwindow* window, int xpos, int ypos)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			data.x = xpos;
+			data.y = ypos;
+			WindowMovedEvent event(xpos, ypos);
+			data.EventCallback(event);
+			OAK_CORE_TRACE("Testing glfw callback: {}", event.ToString());
+
+		});
+
 		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -80,6 +93,55 @@ namespace Oak {
 			data.EventCallback(event);
 		});
 
+		glfwSetWindowIconifyCallback(m_Window, [](GLFWwindow* window, int iconified)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			if (iconified)
+			{
+				WindowMinimizeEvent event;
+				data.Minimized = true;
+				data.Maximized = false;
+				data.Restored  = false;
+				data.EventCallback(event);
+
+			} else {
+				data.Minimized = false;
+				if (glfwGetWindowAttrib(window, GLFW_MAXIMIZED))
+				{
+					data.Maximized = true;
+					data.Restored = false;
+					WindowMaximizeEvent event;
+					data.EventCallback(event);
+
+				} else {
+					data.Maximized = false;
+					data.Restored  = true;
+					WindowRestoreEvent event;
+					data.EventCallback(event);
+				}
+			}
+		});
+
+		glfwSetWindowMaximizeCallback(m_Window, [](GLFWwindow* window, int maximized)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			if (maximized)
+			{
+				WindowMaximizeEvent event;
+				data.Minimized = false;
+				data.Maximized = true;
+				data.Restored  = false;
+				data.EventCallback(event);
+			} else {
+				WindowRestoreEvent event;
+				data.Minimized = false;
+				data.Maximized = false;
+				data.Restored = true;
+				data.EventCallback(event);
+			}
+
+		});
+		
 		glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -89,7 +151,6 @@ namespace Oak {
 				case GLFW_PRESS:
 				{
 					KeyPressedEvent event(key, 0);
-					OAK_CORE_INFO("{0}", event);
 					data.EventCallback(event);
 					break;
 				}
@@ -153,7 +214,8 @@ namespace Oak {
 			data.EventCallback(event);
 		});
     }
-   	void WindowsWindow::Shutdown()
+   
+	void WindowsWindow::Shutdown()
     {
 
 		glfwDestroyWindow(m_Window);
@@ -182,11 +244,26 @@ namespace Oak {
 		m_Data.VSync = enabled;
 	}
 
-	bool WindowsWindow::IsVSync() const
+
+	void WindowsWindow::Minimize()
 	{
-		return m_Data.VSync;
+		glfwIconifyWindow(m_Window);
+	}
+	void WindowsWindow::Maximize()
+	{
+		glfwMaximizeWindow(m_Window);
+	}
+	void WindowsWindow::Restore()
+	{
+		glfwRestoreWindow(m_Window);
 	}
 
+	void WindowsWindow::Move(int dx, int dy)
+	{
+		int x_current, y_current;
+		glfwGetWindowPos(m_Window, &x_current, &y_current);
+		glfwSetWindowPos(m_Window, x_current + dx, y_current + dy);
+	}
 
-
+	
 }
