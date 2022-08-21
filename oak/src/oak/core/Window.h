@@ -45,7 +45,8 @@ namespace Oak {
 		virtual void Minimize() = 0;
 		virtual void Maximize() = 0;
 		virtual void Restore() = 0;
-		virtual void Move(int dx, int dy) = 0;
+		virtual void Move(int x, int y) = 0;
+		virtual void MoveDelta(int dx, int dy) = 0;
 
 		virtual void* GetNativeWindow() const = 0;
 

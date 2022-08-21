@@ -14,7 +14,9 @@ namespace Oak
         void PushPanel(Panel* panel);
         void PopPanel(Panel* panel);
         void ClearStack();
-        
+      
+        std::vector<Panel*> GetPanels() {return m_Panels; }
+
         std::vector<Panel*>::iterator begin() { return m_Panels.begin(); }
         std::vector<Panel*>::iterator end() { return m_Panels.end(); }
         std::vector<Panel*>::reverse_iterator rbegin() { return m_Panels.rbegin(); }

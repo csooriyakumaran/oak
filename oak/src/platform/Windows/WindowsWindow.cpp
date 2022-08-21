@@ -12,6 +12,7 @@
 #include "oak/renderer/Renderer.h"
 
 #include "platform/OpenGL/OpenGLContext.h"
+#include "stb_image.h"
 
 namespace Oak {
 
@@ -36,8 +37,6 @@ namespace Oak {
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
-	
-
 		OAK_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
 		if (s_GLFWWindowCount == 0)
@@ -56,7 +55,17 @@ namespace Oak {
 			glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 			m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 			++s_GLFWWindowCount;
+
+			GLFWimage images[1];
+			images[0].pixels = stbi_load("assets/textures/icons8-opium-poppy-24.png", &images[0].width, &images[0].height, 0, 4); //rgba channels 
+			glfwSetWindowIcon(m_Window, 1, images);
+			stbi_image_free(images[0].pixels);
+
+		
+		
 		}
+
+
 
 		m_Context = GraphicsContext::Create(m_Window);
 		m_Context->Init();
@@ -258,11 +267,16 @@ namespace Oak {
 		glfwRestoreWindow(m_Window);
 	}
 
-	void WindowsWindow::Move(int dx, int dy)
+	void WindowsWindow::MoveDelta(int dx, int dy)
 	{
 		int x_current, y_current;
 		glfwGetWindowPos(m_Window, &x_current, &y_current);
 		glfwSetWindowPos(m_Window, x_current + dx, y_current + dy);
+	}
+
+	void WindowsWindow::Move(int x, int y)
+	{
+		glfwSetWindowPos(m_Window,x, y);
 	}
 
 	

@@ -28,7 +28,8 @@ namespace Oak {
 		void Minimize() override;
 		void Maximize() override;
 		void Restore() override;
-		void Move(int dx, int dy) override;
+		void MoveDelta(int dx, int dy) override;
+		void Move(int x, int y) override;
 
 
 		virtual void* GetNativeWindow() const { return m_Window; }
@@ -44,7 +45,8 @@ namespace Oak {
 		struct WindowData
 		{
 			std::string Title;
-			unsigned int Width, Height, x, y;
+			unsigned int Width, Height;
+			unsigned int x = 0, y = 0;
 			bool VSync;
 			bool Minimized;
 			bool Maximized;
