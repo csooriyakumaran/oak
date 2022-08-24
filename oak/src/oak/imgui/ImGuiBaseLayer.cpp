@@ -3,6 +3,7 @@
 
 #include "imgui.h"
 #include "implot.h"
+#include "imgui_node_editor.h"
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
 
@@ -25,6 +26,7 @@ namespace Oak {
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
         ImPlot::CreateContext();
+		ax::NodeEditor::CreateEditor();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
 		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
@@ -69,6 +71,7 @@ namespace Oak {
     {
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
+		ax::NodeEditor::DestroyEditor(ax::NodeEditor::GetCurrentEditor());
         ImPlot::DestroyContext();
 		ImGui::DestroyContext();
     }
