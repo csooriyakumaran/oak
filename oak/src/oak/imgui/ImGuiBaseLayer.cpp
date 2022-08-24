@@ -3,7 +3,7 @@
 
 #include "imgui.h"
 #include "implot.h"
-#include "imgui_node_editor.h"
+#include "imnodes.h"
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
 
@@ -26,14 +26,15 @@ namespace Oak {
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
         ImPlot::CreateContext();
-		ax::NodeEditor::CreateEditor();
+		ImNodes::CreateContext();
+
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
 		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
 		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
-		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
+		io.ConfigViewportsNoAutoMerge = true;
 
 		
         float fontSize = 16.0f;// *2.0f;
@@ -71,7 +72,8 @@ namespace Oak {
     {
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
-		ax::NodeEditor::DestroyEditor(ax::NodeEditor::GetCurrentEditor());
+
+		ImNodes::DestroyContext();
         ImPlot::DestroyContext();
 		ImGui::DestroyContext();
     }

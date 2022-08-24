@@ -9,6 +9,8 @@
 #include "oak/core/Layer.h"
 #include "oak/core/Panel.h"
 #include "oak/core/PanelStack.h"
+#include "oak/core/Node.h"
+#include "oak/core/NodeStack.h"
 #include "oak/core/Log.h"
 
 
