@@ -27,6 +27,7 @@ project "Oak"
         "../vendor/spdlog/include",
         "../vendor/ImGui",
         "../vendor/implot",
+        "../vendor/imnode",
     }
 
     links
@@ -35,6 +36,7 @@ project "Oak"
         "GLFW",
         "opengl32",
         "implot",
+        "imnode"
     }
 
     defines
