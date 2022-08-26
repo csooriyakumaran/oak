@@ -20,3 +20,6 @@
 [submodule "vendor/imnodes"]
 	path = vendor/imnodes
 	url = https://github.com/csooriyakumaran/imnodes
+[submodule "vendor/yaml-cpp"]
+	path = vendor/yaml-cpp
+	url = https://github.com/thecherno/yaml-cpp
