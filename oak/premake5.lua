@@ -28,6 +28,7 @@ project "Oak"
         "../vendor/ImGui",
         "../vendor/implot",
         "../vendor/imnodes",
+        "../vendor/yaml-cpp/include"
     }
 
     links
@@ -36,7 +37,8 @@ project "Oak"
         "GLFW",
         "opengl32",
         "implot",
-        "imnodes"
+        "imnodes",
+        "yaml-cpp"
     }
 
     defines

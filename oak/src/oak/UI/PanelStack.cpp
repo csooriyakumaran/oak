@@ -1,5 +1,5 @@
 #include "oakpch.h"
-#include "oak/core/PanelStack.h"
+#include "PanelStack.h"
 
 namespace Oak
 {

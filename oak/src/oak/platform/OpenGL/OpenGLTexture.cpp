@@ -1,5 +1,5 @@
 #include "oakpch.h"
-#include "platform/OpenGL/OpenGLTexture.h"
+#include "oak/platform/OpenGL/OpenGLTexture.h"
 
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -76,6 +76,7 @@ namespace Oak {
 
 	OpenGLTexture2D::~OpenGLTexture2D()
 	{
+		OAK_CORE_TRACE_TAG("~OpenGLTexture2D", "Deleting Texture ID {0}", m_RendererID);
 		glDeleteTextures(1, &m_RendererID);
 	}
 

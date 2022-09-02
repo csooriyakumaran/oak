@@ -1,24 +1,35 @@
 #pragma once
 
-#include "oak/core/Base.h"
-#include "oak/core/Log.h"
-#include <filesystem>
+#ifdef OAK_PLATFORM_WINDOWS
+	#define OAK_DEBUG_BREAK __debugbreak()
+#else
+	#define OAK_DEBUG_BREAK
+#endif // OAK_PLATFORM_WINDOWS
+
+#ifdef OAK_DEBUG
+	#define OAK_ENABLE_ASSERTS
+#endif
+
+#define OAK_ENABLE_VERIFY
 
 #ifdef OAK_ENABLE_ASSERTS
-
-	// Alteratively we could use the same "default" message for both "WITH_MSG" and "NO_MSG" and
-	// provide support for custom formatting by concatenating the formatting string instead of having the format inside the default message
-	#define OAK_INTERNAL_ASSERT_IMPL(type, check, msg, ...) { if(!(check)) { OAK##type##ERROR(msg, __VA_ARGS__); OAK_DEBUGBREAK(); } }
-	#define OAK_INTERNAL_ASSERT_WITH_MSG(type, check, ...) OAK_INTERNAL_ASSERT_IMPL(type, check, "Assertion failed: {0}", __VA_ARGS__)
-	#define OAK_INTERNAL_ASSERT_NO_MSG(type, check) OAK_INTERNAL_ASSERT_IMPL(type, check, "Assertion '{0}' failed at {1}:{2}", OAK_STRINGIFY_MACRO(check), std::filesystem::path(__FILE__).filename().string(), __LINE__)
-
-	#define OAK_INTERNAL_ASSERT_GET_MACRO_NAME(arg1, arg2, macro, ...) macro
-	#define OAK_INTERNAL_ASSERT_GET_MACRO(...) OAK_EXPAND_MACRO( OAK_INTERNAL_ASSERT_GET_MACRO_NAME(__VA_ARGS__, OAK_INTERNAL_ASSERT_WITH_MSG, OAK_INTERNAL_ASSERT_NO_MSG) )
-
-	// Currently accepts at least the condition and one additional parameter (the message) being optional
-	#define OAK_ASSERT(...) OAK_EXPAND_MACRO( OAK_INTERNAL_ASSERT_GET_MACRO(__VA_ARGS__)(_, __VA_ARGS__) )
-	#define OAK_CORE_ASSERT(...) OAK_EXPAND_MACRO( OAK_INTERNAL_ASSERT_GET_MACRO(__VA_ARGS__)(_CORE_, __VA_ARGS__) )
+	#define OAK_CORE_ASSERT_MESSAGE_INTERNAL(...)  ::Oak::Log::PrintAssertMessage(::Oak::Log::Type::Core, "Assertion Failed", __VA_ARGS__)
+	#define OAK_ASSERT_MESSAGE_INTERNAL(...)  ::Oak::Log::PrintAssertMessage(::Oak::Log::Type::Client, "Assertion Failed", __VA_ARGS__)
+	
+	#define OAK_CORE_ASSERT(condition, ...) { if(!(condition)) { OAK_CORE_ASSERT_MESSAGE_INTERNAL(__VA_ARGS__); OAK_DEBUG_BREAK; } }
+	#define OAK_ASSERT(condition, ...) { if(!(condition)) { OAK_ASSERT_MESSAGE_INTERNAL(__VA_ARGS__); OAK_DEBUG_BREAK; } }
 #else
-	#define OAK_ASSERT(...)
-	#define OAK_CORE_ASSERT(...)
+	#define OAK_CORE_ASSERT(condition, ...)
+	#define OAK_ASSERT(condition, ...)
+#endif
+
+#ifdef OAK_ENABLE_VERIFY
+	#define OAK_CORE_VERIFY_MESSAGE_INTERNAL(...)  ::Oak::Log::PrintAssertMessage(::Oak::Log::Type::Core, "Verify Failed", __VA_ARGS__)
+	#define OAK_VERIFY_MESSAGE_INTERNAL(...)  ::Oak::Log::PrintAssertMessage(::Oak::Log::Type::Client, "Verify Failed", __VA_ARGS__)
+	
+	#define OAK_CORE_VERIFY(condition, ...) { if(!(condition)) { OAK_CORE_VERIFY_MESSAGE_INTERNAL(__VA_ARGS__); OAK_DEBUG_BREAK; } }
+	#define OAK_VERIFY(condition, ...) { if(!(condition)) { OAK_VERIFY_MESSAGE_INTERNAL(__VA_ARGS__); OAK_DEBUG_BREAK; } }
+#else
+	#define OAK_CORE_VERIFY(condition, ...)
+	#define OAK_VERIFY(condition, ...)
 #endif

@@ -6,15 +6,19 @@
 #ifdef OAK_PLATFORM_WINDOWS
 
 extern Oak::Application* Oak::CreateApplication(int argc, char** argv);
+bool g_ApplicationRunning = true;
 
 int Oak::Main(int argc, char** argv)
 {
-	Oak::Log::Init();
-
-	Oak::Application* app = Oak::CreateApplication(argc, argv);
-	app->Run();
-	delete app;
-
+	while (g_ApplicationRunning)
+	{
+		Oak::InitializeEngine();
+		Oak::Application* app = Oak::CreateApplication(argc, argv);
+		OAK_CORE_ASSERT(app, "Client Application is NULL!");
+		app->Run();
+		delete app;
+		Oak::ShutdownEngine();
+	}
 	return 0;
 }
 

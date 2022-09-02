@@ -1,5 +1,5 @@
 #include "oakpch.h"
-#include "oak/core/NodeStack.h"
+#include "NodeStack.h"
 
 namespace Oak
 {

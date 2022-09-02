@@ -1,6 +1,6 @@
 #pragma once
 #include "oakpch.h"
-#include "oak/core/Node.h"
+#include "Node.h"
 
 namespace Oak
 {

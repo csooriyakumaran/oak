@@ -31,21 +31,37 @@ namespace Oak {
 
     class Application
     {
+        using EventCallbackFn = std::function<void(Event&)>;
+
     public:
         Application(const ApplicationSpecification& specification);
         ~Application();
 
-        void OnEvent(Event& e);
+        void Run();
+        void Close();
+
+        virtual void OnInit() {}
+        virtual void OnShutdown();
+        virtual void OnUpdate(Timestep ts) {}
+
+        virtual void OnEvent(Event& e);
+        
         void PushLayer(Layer* layer);
         void PushOverlay(Layer *layer);
+        void PopLayer(Layer* layer);
+        void PopOverlay(Layer* layer);
 
-        Window& GetWindow() { return *m_Window;}
+        void RenderImGui();
+
+        void AddEventCallBack(const EventCallbackFn& eventCallback) { m_EventCallbacks.push_back(eventCallback); }
+
+
+        inline Window& GetWindow() { return *m_Window;}
+        
         bool IsRunning() {return m_Running;}
         bool IsMinimized() {return m_Minimized;}
         bool IsMaximized() {return m_Maximized;}
         bool IsRestored() { return m_Restored; }
-
-        void Close();
 
         ImGuiBaseLayer* GetImGuiBaseLayer() { return m_ImGuiBaseLayer; }
 
@@ -53,7 +69,6 @@ namespace Oak {
         const ApplicationSpecification& GetSpecification() const { return m_Specification;}
 
     private:
-        void Run();
         bool OnWindowClose(WindowCloseEvent& e);
         bool OnWindowResize(WindowResizeEvent& e);
         bool OnWindowMinimize(WindowMinimizeEvent& e);
@@ -65,6 +80,7 @@ namespace Oak {
         Scope<Window> m_Window;
         ImGuiBaseLayer* m_ImGuiBaseLayer;
         LayerStack m_LayerStack;
+        std::vector<EventCallbackFn> m_EventCallbacks;
                 
         bool m_Running = true;
         bool m_Minimized = false;

@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef OAK_PLATFORM_WINDOWS
+	#include <Windows.h>
+#endif // OAK_PLATFORM_WINDOWS
+
 #include <iostream>
 #include <memory>
 #include <utility>
@@ -17,6 +21,7 @@
 #include <filesystem>
 #include <fstream>
 
-#ifdef OAK_PLATFORM_WINDOWS
-	#include <Windows.h>
-#endif // OAK_PLATFORM_WINDOWS
+
+#include <oak/core/Base.h>
+#include <oak/core/Log.h>
+#include <oak/events/Event.h>

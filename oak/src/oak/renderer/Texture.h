@@ -6,7 +6,7 @@
 
 namespace Oak {
 
-	class Texture
+	class Texture : public RefCounted
 	{
 	public:
 		virtual ~Texture() = default;

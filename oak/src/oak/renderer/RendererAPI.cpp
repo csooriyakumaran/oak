@@ -1,7 +1,7 @@
 #include "oakpch.h"
 #include "oak/renderer/RendererAPI.h"
 
-#include "Platform/OpenGL/OpenGLRendererAPI.h"
+#include "oak/platform/OpenGL/OpenGLRendererAPI.h"
 
 namespace Oak {
 
@@ -11,11 +11,11 @@ namespace Oak {
 	{
 		switch (s_API)
 		{
-			case RendererAPI::API::None:    OAK_CORE_CRITICAL("RendererAPI::None is currently not supported!"); return nullptr;
+			case RendererAPI::API::None:    OAK_CORE_FATAL_TAG("RendererAPI", "RendererAPI::None is currently not supported!"); return nullptr;
 			case RendererAPI::API::OpenGL:  return CreateScope<OpenGLRendererAPI>();
 		}
 
-		OAK_CORE_CRITICAL("Unknown RendererAPI!");
+		OAK_CORE_FATAL_TAG("RendererAPI", "Unknown RendererAPI!");
 		return nullptr;
 	}
 

@@ -1,7 +1,7 @@
 #include "oakpch.h"
 #include "oak/core/Base.h"
 
-#include "platform/Windows/WindowsWindow.h"
+#include "oak/platform/Windows/WindowsWindow.h"
 
 #include "oak/core/Input.h"
 
@@ -11,7 +11,7 @@
 
 #include "oak/renderer/Renderer.h"
 
-#include "platform/OpenGL/OpenGLContext.h"
+#include "oak/platform/OpenGL/OpenGLContext.h"
 #include "stb_image.h"
 
 namespace Oak {
@@ -57,7 +57,8 @@ namespace Oak {
 			++s_GLFWWindowCount;
 
 			GLFWimage images[1];
-			images[0].pixels = stbi_load("assets/textures/icons8-opium-poppy-24.png", &images[0].width, &images[0].height, 0, 4); //rgba channels 
+			//images[0].pixels = stbi_load("assets/textures/icons8-opium-poppy-24.png", &images[0].width, &images[0].height, 0, 4); //rgba channels 
+			images[0].pixels = stbi_load("assets/textures/wi-logo-gradient-2-24.png", &images[0].width, &images[0].height, 0, 4); //rgba channels 
 			glfwSetWindowIcon(m_Window, 1, images);
 			stbi_image_free(images[0].pixels);
 

@@ -1,5 +1,5 @@
 #include "oakpch.h"
-#include "platform/OpenGL/OpenGLRendererAPI.h"
+#include "oak/platform/OpenGL/OpenGLRendererAPI.h"
 
 #include <glad/glad.h>
 
@@ -16,10 +16,10 @@ namespace Oak {
 	{
 		switch (severity)
 		{
-			case GL_DEBUG_SEVERITY_HIGH:         OAK_CORE_CRITICAL(message); return;
-			case GL_DEBUG_SEVERITY_MEDIUM:       OAK_CORE_ERROR(message); return;
-			case GL_DEBUG_SEVERITY_LOW:          OAK_CORE_WARN(message); return;
-			case GL_DEBUG_SEVERITY_NOTIFICATION: OAK_CORE_TRACE(message); return;
+			case GL_DEBUG_SEVERITY_HIGH:         OAK_CORE_FATAL_TAG("OpenGLRendererAPI", message); return;
+			case GL_DEBUG_SEVERITY_MEDIUM:       OAK_CORE_ERROR_TAG("OpenGLRendererAPI", message); return;
+			case GL_DEBUG_SEVERITY_LOW:          OAK_CORE_WARN_TAG("OpenGLRendererAPI", message); return;
+			case GL_DEBUG_SEVERITY_NOTIFICATION: OAK_CORE_TRACE_TAG("OpenGLRendererAPI", message); return;
 		}
 		
 		// HZ_CORE_CRITIAL(false, "Unknown severity leve!");

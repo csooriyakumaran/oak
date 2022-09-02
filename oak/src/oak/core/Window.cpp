@@ -3,7 +3,7 @@
 #include "oak/core/window.h"
 
 #ifdef OAK_PLATFORM_WINDOWS
-    #include "platform/Windows/WindowsWindow.h"
+    #include "oak/platform/Windows/WindowsWindow.h"
 #endif
 
 

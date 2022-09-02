@@ -5,8 +5,12 @@
 #include "oak/renderer/Renderer.h"
 
 #include "oak/core/Input.h"
-#include "oak/utils/PlatformUtils.h"
+#include "oak/utilities/FileSystem.h"
 
+#include "imgui.h"
+
+extern bool g_ApplicationRunning;
+extern ImGuiContext* GImGui;
 
 namespace Oak {
 
@@ -54,11 +58,6 @@ namespace Oak {
     }
 
 
-    void Application::Close()
-	{
-		m_Running = false;
-	}
-
    	void Application::OnEvent(Event& e)
 	{
 
@@ -80,18 +79,19 @@ namespace Oak {
     
 	void Application::Run()
 	{
-
+		OnInit(); // client implemented initilization
 		while (m_Running)
 		{
-
 			float time = Time::GetTime();
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
+			//ProcessEvents(); // process deferred events
+
 			if (!m_Minimized)
 			{
 				{
-
+					//add scope profiling
 					for (Layer* layer : m_LayerStack)
 						layer->OnUpdate(timestep);
 				}
@@ -106,12 +106,24 @@ namespace Oak {
 
 			m_Window->OnUpdate();
 		}
+		OnShutdown();
+	}
+
+	void Application::Close()
+	{
+		m_Running = false;
+	}
+
+	void Application::OnShutdown()
+	{
+		m_EventCallbacks.clear();
+		g_ApplicationRunning = false;
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)
 	{
-		m_Running = false;
-		return true;
+		Close();
+		return false; // give other things a chance to react to the window closing
 	}
 
 	bool Application::OnWindowResize(WindowResizeEvent& e)

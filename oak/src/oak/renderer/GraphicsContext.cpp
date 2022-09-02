@@ -2,7 +2,7 @@
 #include "oak/renderer/GraphicsContext.h"
 
 #include "oak/renderer/Renderer.h"
-#include "platform/OpenGL/OpenGLContext.h"
+#include "oak/platform/OpenGL/OpenGLContext.h"
 
 namespace Oak {
 

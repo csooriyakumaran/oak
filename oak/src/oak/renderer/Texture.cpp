@@ -1,8 +1,9 @@
 #include "oakpch.h"
+#include "oak/core/Ref.h"
 #include "oak/renderer/Texture.h"
 
 #include "oak/renderer/Renderer.h"
-#include "platform/OpenGL/OpenGLTexture.h"
+#include "oak/platform/OpenGL/OpenGLTexture.h"
 
 namespace Oak {
 
@@ -11,7 +12,7 @@ namespace Oak {
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:    OAK_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
-			case RendererAPI::API::OpenGL:  return CreateRef<OpenGLTexture2D>(width, height);
+			case RendererAPI::API::OpenGL:  return Ref<OpenGLTexture2D>::Create(width, height);
 		}
 
 		OAK_CORE_ASSERT(false, "Unknown RendererAPI!");
@@ -23,7 +24,7 @@ namespace Oak {
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:    OAK_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
-			case RendererAPI::API::OpenGL:  return CreateRef<OpenGLTexture2D>(path);
+			case RendererAPI::API::OpenGL:  return Ref<OpenGLTexture2D>::Create(path);
 		}
 
 		OAK_CORE_ASSERT(false, "Unknown RendererAPI!");

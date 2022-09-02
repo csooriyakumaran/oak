@@ -1,12 +1,15 @@
 #pragma once
 
+#include "oak/core/Ref.h"
 #include "oak/core/Timestep.h"
 #include "oak/events/Event.h"
+#include "oak/UI/PanelStack.h"
+
 
 
 namespace Oak {
 
-	class Layer
+	class Layer 
 	{
 	public:
 		Layer(const std::string& name = "Layer");
@@ -22,6 +25,7 @@ namespace Oak {
 
 	protected:
 		std::string m_DebugName;
+
 	};
 
 }
