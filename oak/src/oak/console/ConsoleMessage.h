@@ -13,10 +13,11 @@ namespace Oak {
 		{
 			None = -1,
 			Trace = 1 << 0,
-			Info = 1 << 1,
-			Warn = 1 << 2,
-			Error = 1 << 3,
-			Fatal = 1 << 4
+			Debug = 1 << 1,
+			Info = 1 << 2,
+			Warn = 1 << 3,
+			Error = 1 << 4,
+			Fatal = 1 << 5
 		};
 
 	public:
@@ -37,7 +38,7 @@ namespace Oak {
 		uint32_t m_Count;
 		Category m_Category;
 
-		friend class EditorConsolePanel;
+		friend class ConsolePanel;
 	};
 
 }

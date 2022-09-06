@@ -92,7 +92,6 @@ namespace Oak {
 			data.y = ypos;
 			WindowMovedEvent event(xpos, ypos);
 			data.EventCallback(event);
-			OAK_CORE_TRACE("Testing glfw callback: {}", event.ToString());
 
 		});
 

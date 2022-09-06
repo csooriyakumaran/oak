@@ -143,7 +143,7 @@ namespace Oak
 			return false;
 
 		std::string themeName = data["THEME"].as<std::string>();
-		OAK_CORE_TRACE("Loading theme '{0}'", themeName);
+		OAK_CORE_TRACE_TAG("ImGuiStyleSerializer::Deserialize","Loading theme '{0}'", themeName);
 
 		if (data["STYLE"])
 		{
@@ -191,10 +191,8 @@ namespace Oak
 			m_Style.CurveTessellationTol =		style["CurveTessellationTol"].as<float>();
 			m_Style.CircleTessellationMaxError =style["CircleTessellationMaxError"].as<float>();
 
-			OAK_WARN(" window padding {}, {}", m_Style.WindowPadding.x, m_Style.WindowPadding.y);
-			OAK_WARN(" tab rounding {}", m_Style.TabRounding);
 		}
-		if (data["Colors"])
+		if (data["COLORS"])
 		{
 			auto colors = data["COLORS"];
 

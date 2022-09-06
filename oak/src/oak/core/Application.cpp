@@ -142,7 +142,6 @@ namespace Oak {
 	}
 	bool Application::OnWindowMinimize(WindowMinimizeEvent& e)
 	{
-		OAK_WARN("Application::OnWindowMinimize(WindowMinimizeEvent& e): Event {}", e.ToString());
 		m_Minimized = true;
 		m_Maximized = false;
 		m_Restored  = false;
@@ -150,7 +149,6 @@ namespace Oak {
 	}
 	bool Application::OnWindowMaximize(WindowMaximizeEvent& e)
 	{
-		OAK_WARN("Application::OnWindowMaximize(WindowMaximizeEvent& e): Event {}", e.ToString());
 		m_Minimized = false;
 		m_Maximized = true;
 		m_Restored = false;
@@ -158,7 +156,6 @@ namespace Oak {
 	}
 	bool Application::OnWindowRestore(WindowRestoreEvent& e)
 	{
-		OAK_WARN("Application::OnWindowRestore(WindowRestoreEvent& e): Event {}", e.ToString());
 		m_Minimized = false;
 		m_Maximized = false;
 		m_Restored  = true;

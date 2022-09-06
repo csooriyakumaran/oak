@@ -1,5 +1,6 @@
 #pragma once
 #include "oak/console/ConsoleMessage.h"
+#include "oak/console/ConsolePanel.h"
 
 #include "spdlog/sinks/base_sink.h"
 #include <mutex>
@@ -35,7 +36,7 @@ namespace Oak{
 				if (message.GetCategory() == ConsoleMessage::Category::None)
 					continue;
 
-				//EditorConsolePanel::PushMessage(message);
+				ConsolePanel::PushMessage(message);
 			}
 
 			m_MessageCount = 0;
@@ -49,6 +50,7 @@ namespace Oak{
 			case spdlog::level::trace:
 				return ConsoleMessage::Category::Trace;
 			case spdlog::level::debug:
+				return ConsoleMessage::Category::Debug;
 			case spdlog::level::info:
 				return ConsoleMessage::Category::Info;
 			case spdlog::level::warn:

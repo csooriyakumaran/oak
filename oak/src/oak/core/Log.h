@@ -38,7 +38,6 @@ namespace Oak {
 
 		inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_EngineLogger; }
 		inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return s_ClientLogger; }
-		inline static std::shared_ptr<spdlog::logger>& GetEmbeddedConsoleLogger() { return s_EmbeddedConsoleLogger; }
 
 		static bool HasTag(const std::string& tag) { return s_EnabledTags.find(tag) != s_EnabledTags.end(); }
 		static std::map<std::string, TagDetails>& EnabledTags() { return s_EnabledTags; }
@@ -58,7 +57,7 @@ namespace Oak {
 			{
 				case Level::Trace: return "Trace";
 				case Level::Debug: return "Debug";
-				case Level::Info:  return "Infor";
+				case Level::Info:  return "Info";
 				case Level::Warn:  return "Warn";
 				case Level::Error: return "Error";
 				case Level::Fatal: return "Fatal";
@@ -82,7 +81,6 @@ namespace Oak {
 	private:
 		static std::shared_ptr<spdlog::logger> s_EngineLogger;
 		static std::shared_ptr<spdlog::logger> s_ClientLogger;
-		static std::shared_ptr<spdlog::logger> s_EmbeddedConsoleLogger;
 
 		inline static std::map<std::string, TagDetails> s_EnabledTags;
 	};
@@ -140,12 +138,6 @@ inline OStream& operator<<(OStream& os, glm::qua<T, Q> quaternion)
 #define OAK_ERROR(...)   ::Oak::Log::PrintMessage(::Oak::Log::Type::Client, ::Oak::Log::Level::Error, "", __VA_ARGS__)
 #define OAK_FATAL(...)   ::Oak::Log::PrintMessage(::Oak::Log::Type::Client, ::Oak::Log::Level::Fatal, "", __VA_ARGS__)
 
-// Editor Console Logging Macros
-#define OAK_CONSOLE_LOG_TRACE(...)   Oak::Log::GetEmbeddedConsoleLogger()->trace(__VA_ARGS__)
-#define OAK_CONSOLE_LOG_INFO(...)    Oak::Log::GetEmbeddedConsoleLogger()->info(__VA_ARGS__)
-#define OAK_CONSOLE_LOG_WARN(...)    Oak::Log::GetEmbeddedConsoleLogger()->warn(__VA_ARGS__)
-#define OAK_CONSOLE_LOG_ERROR(...)   Oak::Log::GetEmbeddedConsoleLogger()->error(__VA_ARGS__)
-#define OAK_CONSOLE_LOG_FATAL(...)   Oak::Log::GetEmbeddedConsoleLogger()->critical(__VA_ARGS__)
 
 namespace Oak {
 
@@ -156,7 +148,7 @@ namespace Oak {
 		if (detail.Enabled && detail.LevelFilter <= level)
 		{
 			auto logger = (type == Type::Core) ? GetCoreLogger() : GetClientLogger();
-			std::string logString = tag.empty() ? "{0}{1}" : "[{0}] {1}";
+			std::string logString = tag.empty() ? "{0}{1}" : "<{0}> {1}";
 			switch (level)
 			{
 			case Level::Trace:
