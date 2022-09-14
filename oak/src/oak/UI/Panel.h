@@ -3,23 +3,16 @@
 #include "oak/core/Base.h"
 #include <imgui.h>
 
-
 namespace Oak
 {
     class Panel : public RefCounted
     {
     public:
-        
-        //Panel(const std::string& name, bool open);
         virtual ~Panel(){};
-        
-        //virtual void SetLocalStyle() {}
+        virtual void PushLocalStyle() {}
         virtual void OnUIRender(const char* name, bool& open) {}
         virtual void OnEvent(Event& e) {}
         virtual void OnProjectChanged() {}
-        
-        
-        virtual void PushLocalStyle() {}
         
         void PopLocalStyle() 
         {
@@ -35,13 +28,8 @@ namespace Oak
                 m_ColorPopCount = 0;
             }
         }
-
     protected:
         uint32_t m_StylePopCount = 0;
         uint32_t m_ColorPopCount = 0;
-
-        
-
     };
-
 }

@@ -68,6 +68,8 @@ namespace Oak {
         static Application& Get() { return *s_Instance;}
         const ApplicationSpecification& GetSpecification() const { return m_Specification;}
 
+        void CreateNewWindow();
+
     private:
         bool OnWindowClose(WindowCloseEvent& e);
         bool OnWindowResize(WindowResizeEvent& e);

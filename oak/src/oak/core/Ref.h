@@ -47,7 +47,6 @@ namespace Oak
 			: m_Instance(instance)
 		{
 			static_assert(std::is_base_of<RefCounted, T>::value, "Class is not RefCounted!");
-
 			IncRef();
 		}
 

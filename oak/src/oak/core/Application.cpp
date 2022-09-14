@@ -42,6 +42,9 @@ namespace Oak {
     Application::~Application()
     {
     }
+	void Application::CreateNewWindow()
+	{
+	}
 
     void Application::PushLayer(Layer* layer)
     {

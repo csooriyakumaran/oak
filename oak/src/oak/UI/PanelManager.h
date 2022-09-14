@@ -116,8 +116,6 @@ namespace Oak
                 panelMap.at(id).IsOpen ^= true;
                 return;
             }
-
-
         }
 
         void RemovePanel(const char* strID)

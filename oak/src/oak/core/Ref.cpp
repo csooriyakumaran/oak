@@ -20,7 +20,6 @@ namespace Oak {
 		{
 			std::scoped_lock<std::mutex> lock(s_LiveReferenceMutex);
 			OAK_CORE_ASSERT(instance);
-			printf("%p\n", instance);
 			OAK_CORE_ASSERT(s_LiveReferences.find(instance) != s_LiveReferences.end());
 			s_LiveReferences.erase(instance);
 		}
