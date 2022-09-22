@@ -2,6 +2,8 @@
 #include "oak/core/Base.h"
 #include "oak/platform/OpenGL/OpenGLContext.h"
 
+#include <Glad/glad.h>
+#include <GLFW/glfw3.h>
 
 namespace Oak {
 

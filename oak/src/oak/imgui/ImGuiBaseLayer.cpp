@@ -6,12 +6,15 @@
 #define IMGUI_DEFINE_MATH_OPERATORS
 #endif
 #include "imgui_internal.h"
+
 #include "implot.h"
 #include "imnodes.h"
-#include "backends/imgui_impl_glfw.h"
-#include "backends/imgui_impl_opengl3.h"
 
 #include "oak/core/Application.h"
+#include "oak/UI/Fonts.h"
+
+#include "backends/imgui_impl_glfw.h"
+#include "backends/imgui_impl_opengl3.h"
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
@@ -40,10 +43,10 @@ namespace Oak {
 		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
 		io.ConfigViewportsNoAutoMerge = true;
 
-		
-        float fontSize = 16.0f;// *2.0f;
-		io.Fonts->AddFontFromFileTTF("assets/fonts/opensans/OpenSans-Bold.ttf", fontSize);
-		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/opensans/OpenSans-Regular.ttf", fontSize);
+		UI::Fonts::Add("OpenSansRegular","assets/fonts/opensans/OpenSans-Regular.ttf", 16.0, true);
+		UI::Fonts::Add("OpenSansBold","assets/fonts/opensans/OpenSans-Bold.ttf", 16.0, false);
+		UI::Fonts::Add("OpenSansItalic","assets/fonts/opensans/OpenSans-Italic.ttf", 16.0, false);
+
 
 		// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
 		ImGuiStyle& style = ImGui::GetStyle();

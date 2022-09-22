@@ -3,9 +3,6 @@
 #include "oak/renderer/GraphicsContext.h"
 
 
-#include <Glad/glad.h>
-#include <GLFW/glfw3.h>
-
 struct GLFWwindow;
 
 namespace Oak {
