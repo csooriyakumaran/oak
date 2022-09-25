@@ -197,12 +197,13 @@ namespace Oak::UI
             | ImGuiTreeNodeFlags_AllowItemOverlap
             | ImGuiTreeNodeFlags_FramePadding;
 
+
         if (openByDefault)
             treeNodeFlags |= ImGuiTreeNodeFlags_DefaultOpen;
 
         bool open = false;
-        const float framePaddingX = 6.0f;
-        const float framePaddingY = 6.0f; // affects height of the header
+        const float framePaddingX = 2.0f;
+        const float framePaddingY = 5.0f; // affects height of the header
 
         Utils::ScopedStyle headerRounding(ImGuiStyleVar_FrameRounding, 0.0f);
         Utils::ScopedStyle headerPaddingAndHeight(ImGuiStyleVar_FramePadding, ImVec2{ framePaddingX, framePaddingY });
@@ -210,6 +211,7 @@ namespace Oak::UI
         //UI::PushID();
         ImGui::PushID(name.c_str());
         open = ImGui::TreeNodeEx("##dummy_id", treeNodeFlags, name.c_str());
+       
         //UI::PopID();
         ImGui::PopID();
 
@@ -218,17 +220,20 @@ namespace Oak::UI
     static void BeginPropertyGrid(uint32_t columns = 2)
     {
         PushID();
-        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4.0f, 4.0f));
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 4.0f));
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2.0f, 4.0f));
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2.0f, 4.0f));
+        ImGui::Unindent(ImGui::GetTreeNodeToLabelSpacing());
         ImGui::Columns(columns);
+        ImGui::SetColumnWidth(0, ImGui::GetWindowContentRegionWidth() * 0.35);
     }
 
     static void EndPropertyGrid()
     {
+        ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
         ImGui::Columns(1);
-        Draw::Underline();
+        Draw::Underline(true);
         ImGui::PopStyleVar(2); // ItemSpacing, FramePadding
-        Draw::ShiftCursorY(18.0f);
+        Draw::ShiftCursorY(9.0f);
         PopID();
     }
 
@@ -239,17 +244,17 @@ namespace Oak::UI
     {
         ImGuiInputTextFlags flags = ImGuiInputTextFlags_None;
         if (disable) flags |= ImGuiInputTextFlags_ReadOnly;
-        Draw::ShiftCursor(10.0f, 9.0f);
+        Draw::ShiftCursor(4.0f, 4.0f);
         ImGui::Text(label);
         ImGui::NextColumn();
-        Draw::ShiftCursorY(4.0f);
+        Draw::ShiftCursorY(2.0f);
         ImGui::PushItemWidth(-1);
         if (disable) BeginDisabled();
         bool modified = ImGui::InputTextWithHint(GenerateID(), hint, &value, flags);
         if (disable) EndDisabled();
 
         if (!IsItemDisabled())
-            Draw::DrawItemActivityOutline(2.0f, true, Colours::Theme::accent);
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
 
         ImGui::PopItemWidth();
         ImGui::NextColumn();
@@ -259,17 +264,17 @@ namespace Oak::UI
 
     static void Property(const char* label, const char* value)
     {
-        Draw::ShiftCursor(10.0f, 9.0f);
+        Draw::ShiftCursor(4.0f, 4.0f);
         ImGui::Text(label);
         ImGui::NextColumn();
-        Draw::ShiftCursorY(4.0f);
+        Draw::ShiftCursorY(2.0f);
         ImGui::PushItemWidth(-1);
         BeginDisabled();
         ImGui::InputText(GenerateID(), (char*)value, 256, ImGuiInputTextFlags_ReadOnly);
         EndDisabled();
 
         if (!IsItemDisabled())
-            Draw::DrawItemActivityOutline(2.0f, true, Colours::Theme::accent);
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
 
         ImGui::PopItemWidth();
         ImGui::NextColumn();
@@ -278,16 +283,16 @@ namespace Oak::UI
 
     static bool Property(const char* label, char* value, size_t length)
     {
-        Draw::ShiftCursor(10.0f, 9.0f);
-        ImGui::Text(label);
+        Draw::ShiftCursor(4.0f, 4.0f);
+            ImGui::Text(label);
         ImGui::NextColumn();
-        Draw::ShiftCursorY(4.0f);
+        Draw::ShiftCursorY(2.0f);
         ImGui::PushItemWidth(-1);
 
         bool modified = ImGui::InputText(GenerateID(), value, length);
 
         if (!IsItemDisabled())
-            Draw::DrawItemActivityOutline(2.0f, true, Colours::Theme::accent);
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
 
         ImGui::PopItemWidth();
         ImGui::NextColumn();
@@ -300,7 +305,7 @@ namespace Oak::UI
     {
         bool modified = false;
 
-        Draw::ShiftCursor(10.0f, 9.0f);
+        Draw::ShiftCursor(4.0f, 4.0f);
         ImGui::Text(label);
         if (std::strlen(helpText) != 0)
         {
@@ -308,13 +313,13 @@ namespace Oak::UI
             HelpMarker(helpText);
         }
         ImGui::NextColumn();
-        Draw::ShiftCursorY(4.0f);
+        Draw::ShiftCursorY(2.0f);
         ImGui::PushItemWidth(-1);
 
         modified = ImGui::Checkbox(GenerateID(), &value);
 
         if (!IsItemDisabled())
-            Draw::DrawItemActivityOutline(2.0f, true, Colours::Theme::accent);
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
 
         ImGui::PopItemWidth();
         ImGui::NextColumn();
@@ -326,16 +331,16 @@ namespace Oak::UI
 
     static bool Property(const char* label, int8_t& value, int8_t min = 0, int8_t max = 0)
     {
-        Draw::ShiftCursor(10.0f, 9.0f);
+        Draw::ShiftCursor(4.0f, 4.0f);
         ImGui::Text(label);
         ImGui::NextColumn();
-        Draw::ShiftCursorY(4.0f);
+        Draw::ShiftCursorY(2.0f);
         ImGui::PushItemWidth(-1);
 
         bool modified = Draw::DragInt8(GenerateID(), &value, 1.0f, min, max);
 
         if (!IsItemDisabled())
-            Draw::DrawItemActivityOutline(2.0f, true, Colours::Theme::accent);
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
 
         ImGui::PopItemWidth();
         ImGui::NextColumn();
@@ -346,16 +351,16 @@ namespace Oak::UI
 
     static bool Property(const char* label, int16_t& value, int16_t min = 0, int16_t max = 0)
     {
-        Draw::ShiftCursor(10.0f, 9.0f);
+        Draw::ShiftCursor(4.0f, 4.0f);
         ImGui::Text(label);
         ImGui::NextColumn();
-        Draw::ShiftCursorY(4.0f);
+        Draw::ShiftCursorY(2.0f);
         ImGui::PushItemWidth(-1);
 
         bool modified = Draw::DragInt16(GenerateID(), &value, 1.0f, min, max);
 
         if (!IsItemDisabled())
-            Draw::DrawItemActivityOutline(2.0f, true, Colours::Theme::accent);
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
 
         ImGui::PopItemWidth();
         ImGui::NextColumn();
@@ -366,16 +371,16 @@ namespace Oak::UI
 
     static bool Property(const char* label, int32_t& value, int32_t min = 0, int32_t max = 0)
     {
-        Draw::ShiftCursor(10.0f, 9.0f);
+        Draw::ShiftCursor(4.0f, 4.0f);
         ImGui::Text(label);
         ImGui::NextColumn();
-        Draw::ShiftCursorY(4.0f);
+        Draw::ShiftCursorY(2.0f);
         ImGui::PushItemWidth(-1);
 
         bool modified = Draw::DragInt32(GenerateID(), &value, 1.0f, min, max);
 
         if (!IsItemDisabled())
-            Draw::DrawItemActivityOutline(2.0f, true, Colours::Theme::accent);
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
 
         ImGui::PopItemWidth();
         ImGui::NextColumn();
@@ -386,16 +391,16 @@ namespace Oak::UI
 
     static bool Property(const char* label, int64_t& value, int64_t min = 0, int64_t max = 0)
     {
-        Draw::ShiftCursor(10.0f, 9.0f);
+        Draw::ShiftCursor(4.0f, 4.0f);
         ImGui::Text(label);
         ImGui::NextColumn();
-        Draw::ShiftCursorY(4.0f);
+        Draw::ShiftCursorY(2.0f);
         ImGui::PushItemWidth(-1);
 
         bool modified = Draw::DragInt64(GenerateID(), &value, 1.0f, min, max);
 
         if (!IsItemDisabled())
-            Draw::DrawItemActivityOutline(2.0f, true, Colours::Theme::accent);
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
 
         ImGui::PopItemWidth();
         ImGui::NextColumn();
@@ -406,16 +411,16 @@ namespace Oak::UI
 
     static bool Property(const char* label, uint8_t& value, uint8_t minValue = 0, uint8_t maxValue = 0)
     {
-        Draw::ShiftCursor(10.0f, 9.0f);
+        Draw::ShiftCursor(4.0f, 4.0f);
         ImGui::Text(label);
         ImGui::NextColumn();
-        Draw::ShiftCursorY(4.0f);
+        Draw::ShiftCursorY(2.0f);
         ImGui::PushItemWidth(-1);
 
         bool modified = Draw::DragUInt8(GenerateID(), &value, 1.0f, minValue, maxValue);
 
         if (!IsItemDisabled())
-            Draw::DrawItemActivityOutline(2.0f, true, Colours::Theme::accent);
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
 
         ImGui::PopItemWidth();
         ImGui::NextColumn();
@@ -426,16 +431,16 @@ namespace Oak::UI
 
     static bool Property(const char* label, uint16_t& value, uint16_t minValue = 0, uint16_t maxValue = 0)
     {
-        Draw::ShiftCursor(10.0f, 9.0f);
+        Draw::ShiftCursor(4.0f, 4.0f);
         ImGui::Text(label);
         ImGui::NextColumn();
-        Draw::ShiftCursorY(4.0f);
+        Draw::ShiftCursorY(2.0f);
         ImGui::PushItemWidth(-1);
 
         bool modified = Draw::DragUInt16(GenerateID(), &value, 1.0f, minValue, maxValue);
 
         if (!IsItemDisabled())
-            Draw::DrawItemActivityOutline(2.0f, true, Colours::Theme::accent);
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
 
         ImGui::PopItemWidth();
         ImGui::NextColumn();
@@ -446,16 +451,16 @@ namespace Oak::UI
 
     static bool Property(const char* label, uint32_t& value, uint32_t minValue = 0, uint32_t maxValue = 0)
     {
-        Draw::ShiftCursor(10.0f, 9.0f);
+        Draw::ShiftCursor(4.0f, 4.0f);
         ImGui::Text(label);
         ImGui::NextColumn();
-        Draw::ShiftCursorY(4.0f);
+        Draw::ShiftCursorY(2.0f);
         ImGui::PushItemWidth(-1);
 
         bool modified = Draw::DragUInt32(GenerateID(), &value, 1.0f, minValue, maxValue);
 
         if (!IsItemDisabled())
-            Draw::DrawItemActivityOutline(2.0f, true, Colours::Theme::accent);
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
 
         ImGui::PopItemWidth();
         ImGui::NextColumn();
@@ -466,16 +471,16 @@ namespace Oak::UI
 
     static bool Property(const char* label, uint64_t& value, uint64_t minValue = 0, uint64_t maxValue = 0)
     {
-        Draw::ShiftCursor(10.0f, 9.0f);
+        Draw::ShiftCursor(4.0f, 4.0f);
         ImGui::Text(label);
         ImGui::NextColumn();
-        Draw::ShiftCursorY(4.0f);
+        Draw::ShiftCursorY(2.0f);
         ImGui::PushItemWidth(-1);
 
         bool modified = Draw::DragUInt64(GenerateID(), &value, 1.0f, minValue, maxValue);
 
         if (!IsItemDisabled())
-            Draw::DrawItemActivityOutline(2.0f, true, Colours::Theme::accent);
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
 
         ImGui::PopItemWidth();
         ImGui::NextColumn();
@@ -486,7 +491,7 @@ namespace Oak::UI
 
     static bool Property(const char* label, float& value, float delta = 0.1f, float min = 0.0f, float max = 0.0f, const char* helpText = "")
     {
-        Draw::ShiftCursor(10.0f, 9.0f);
+        Draw::ShiftCursor(4.0f, 4.0f);
         ImGui::Text(label);
         if (std::strlen(helpText) != 0)
         {
@@ -494,13 +499,13 @@ namespace Oak::UI
             HelpMarker(helpText);
         }
         ImGui::NextColumn();
-        Draw::ShiftCursorY(4.0f);
+        Draw::ShiftCursorY(2.0f);
         ImGui::PushItemWidth(-1);
 
         bool modified = Draw::DragFloat(GenerateID(), &value, delta, min, max);
 
         if (!IsItemDisabled())
-            Draw::DrawItemActivityOutline(2.0f, true, Colours::Theme::accent);
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
 
         ImGui::PopItemWidth();
         ImGui::NextColumn();
@@ -511,16 +516,37 @@ namespace Oak::UI
 
     static bool Property(const char* label, double& value, float delta = 0.1f, double min = 0.0, double max = 0.0)
     {
-        Draw::ShiftCursor(10.0f, 9.0f);
+        Draw::ShiftCursor(4.0f, 4.0f);
         ImGui::Text(label);
         ImGui::NextColumn();
-        Draw::ShiftCursorY(4.0f);
+        Draw::ShiftCursorY(2.0f);
         ImGui::PushItemWidth(-1);
 
         bool modified = Draw::DragDouble(GenerateID(), &value, delta, min, max);
 
         if (!IsItemDisabled())
-            Draw::DrawItemActivityOutline(2.0f, true, Colours::Theme::accent);
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
+
+        ImGui::PopItemWidth();
+        ImGui::NextColumn();
+        Draw::Underline();
+
+        return modified;
+    }
+
+    static bool Property(const char* label, glm::uvec2& value, float delta = 1.0f, float min = 0.0f, float max = 0.0f)
+    {
+        Draw::ShiftCursor(4.0f, 4.0f);
+        ImGui::Text(label);
+        ImGui::NextColumn();
+        Draw::ShiftCursorY(2.0f);
+        ImGui::PushItemWidth(-1);
+
+        bool modified = ImGui::DragScalarN(GenerateID(), ImGuiDataType_U32, glm::value_ptr(value), 2, delta, &min, &max, "%0001d", ImGuiSliderFlags_None);
+
+
+        if (!IsItemDisabled())
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
 
         ImGui::PopItemWidth();
         ImGui::NextColumn();
@@ -530,19 +556,40 @@ namespace Oak::UI
     }
 
 
-    static bool Property(const char* label, glm::vec2& value, float delta = 0.1f, float min = 0.0f, float max = 0.0f)
+    static bool Property(const char* label, glm::ivec2& value, float delta = 1.0f, float min = 0.0f, float max = 0.0f)
     {
-        Draw::ShiftCursor(10.0f, 9.0f);
+        Draw::ShiftCursor(4.0f, 4.0f);
         ImGui::Text(label);
         ImGui::NextColumn();
-        Draw::ShiftCursorY(4.0f);
+        Draw::ShiftCursorY(2.0f);
+        ImGui::PushItemWidth(-1);
+
+        bool modified = ImGui::DragInt2(GenerateID(), glm::value_ptr(value), delta, min, max);
+
+
+        if (!IsItemDisabled())
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
+
+        ImGui::PopItemWidth();
+        ImGui::NextColumn();
+        Draw::Underline();
+
+        return modified;
+    }
+
+    static bool Property(const char* label, glm::vec2& value, float delta = 0.1f, float min = 0.0f, float max = 0.0f)
+    {
+        Draw::ShiftCursor(4.0f, 4.0f);
+        ImGui::Text(label);
+        ImGui::NextColumn();
+        Draw::ShiftCursorY(2.0f);
         ImGui::PushItemWidth(-1);
 
         bool modified = ImGui::DragFloat2(GenerateID(), glm::value_ptr(value), delta, min, max);
 
 
         if (!IsItemDisabled())
-            Draw::DrawItemActivityOutline(2.0f, true, Colours::Theme::accent);
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
 
         ImGui::PopItemWidth();
         ImGui::NextColumn();
@@ -553,7 +600,7 @@ namespace Oak::UI
 
     static bool Property(const char* label, glm::vec3& value, float delta = 0.1f, float min = 0.0f, float max = 0.0f, const char* helpText = "")
     {
-        Draw::ShiftCursor(10.0f, 9.0f);
+        Draw::ShiftCursor(4.0f, 4.0f);
         ImGui::Text(label);
 
         if (std::strlen(helpText) != 0)
@@ -563,13 +610,13 @@ namespace Oak::UI
         }
 
         ImGui::NextColumn();
-        Draw::ShiftCursorY(4.0f);
+        Draw::ShiftCursorY(2.0f);
         ImGui::PushItemWidth(-1);
 
         bool modified = ImGui::DragFloat3(GenerateID(), glm::value_ptr(value), delta, min, max);
 
         if (!IsItemDisabled())
-            Draw::DrawItemActivityOutline(2.0f, true, Colours::Theme::accent);
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
 
         ImGui::PopItemWidth();
         ImGui::NextColumn();
@@ -581,10 +628,10 @@ namespace Oak::UI
     static bool PropertyDropdown(const char* label, const char** options, int32_t optionCount, int32_t* selected)
     {
         const char* current = options[*selected];
-        Draw::ShiftCursor(10.0f, 9.0f);
+        Draw::ShiftCursor(4.0f, 4.0f);
         ImGui::Text(label);
         ImGui::NextColumn();
-        Draw::ShiftCursorY(4.0f);
+        Draw::ShiftCursorY(2.0f);
         ImGui::PushItemWidth(-1);
 
         bool modified = false;
@@ -608,7 +655,7 @@ namespace Oak::UI
         }
 
         if (!IsItemDisabled())
-            Draw::DrawItemActivityOutline(2.0f, true, Colours::Theme::accent);
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
 
         ImGui::PopItemWidth();
         ImGui::NextColumn();
@@ -621,10 +668,10 @@ namespace Oak::UI
     {
         const char* current = options[*selected].c_str();
 
-        Draw::ShiftCursor(10.0f, 9.0f);
+        Draw::ShiftCursor(4.0f, 4.0f);
         ImGui::Text(label);
         ImGui::NextColumn();
-        Draw::ShiftCursorY(4.0f);
+        Draw::ShiftCursorY(2.0f);
         ImGui::PushItemWidth(-1);
 
         bool modified = false;
@@ -648,6 +695,26 @@ namespace Oak::UI
         }
 
         if (!IsItemDisabled())
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
+
+        ImGui::PopItemWidth();
+        ImGui::NextColumn();
+        Draw::Underline();
+
+        return modified;
+    }
+
+    static bool PropertyColor(const char* label, glm::vec3& value)
+    {
+        Draw::ShiftCursor(4.0f, 4.0f);
+        ImGui::Text(label);
+        ImGui::NextColumn();
+        Draw::ShiftCursorY(2.0f);
+        ImGui::PushItemWidth(-1);
+
+        bool modified = ImGui::ColorEdit3(GenerateID(), glm::value_ptr(value));
+
+        if (!IsItemDisabled())
             Draw::DrawItemActivityOutline(2.0f, true, Colours::Theme::accent);
 
         ImGui::PopItemWidth();
@@ -657,7 +724,85 @@ namespace Oak::UI
         return modified;
     }
 
-   
+    static bool PropertyColor(const char* label, ImVec4& value)
+    {
+        Draw::ShiftCursor(4.0f, 4.0f);
+        ImGui::Text(label);
+        ImGui::NextColumn();
+        Draw::ShiftCursorY(2.0f);
+        ImGui::PushItemWidth(-1);
+
+        bool modified = ImGui::ColorEdit4(GenerateID(), &value.x);
+
+        if (!IsItemDisabled())
+            Draw::DrawItemActivityOutline(2.0f, true, Colours::Theme::accent);
+
+        ImGui::PopItemWidth();
+        ImGui::NextColumn();
+        Draw::Underline();
+
+        return modified;
+    }
+    
+    static int s_CheckboxCount = 0;
+
+    static void BeginCheckboxGroup(const char* label)
+    {
+        Draw::ShiftCursor(4.0f, 4.0f);
+        ImGui::Text(label);;
+        ImGui::NextColumn();
+        ImGui::PushItemWidth(-1);
+    }
+
+    static bool PropertyCheckboxGroup(const char* label, bool& value, int cols=2)
+    {
+        bool modified = false;
+
+        if (s_CheckboxCount++ % cols != 0)
+            ImGui::SameLine();
+
+        if (ImGui::Checkbox(GenerateID(), &value))
+            modified = true;
+
+        if (!IsItemDisabled())
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
+
+        ImGui::SameLine();
+        ImGui::Text(label); 
+        return modified;
+    }
+    
+    static bool PropertyCheckboxColorGroup(const char* label, bool& value, ImVec4 col, int cols=2)
+    {
+        bool modified = false;
+
+        if (s_CheckboxCount++ % cols != 0)
+            ImGui::SameLine();
+
+        ImGui::PushStyleColor(ImGuiCol_CheckMark, col);
+        col.w = 0.5;
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, col);
+        if (ImGui::Checkbox(GenerateID(), &value))
+            modified = true;
+        ImGui::PopStyleColor(2);
+        
+        if (!IsItemDisabled())
+            Draw::DrawItemActivityOutline(0.0f, true, Colours::Theme::accent);
+
+
+        ImGui::SameLine();
+        ImGui::Text(label);
+
+        return modified;
+    }
+
+    static void EndCheckboxGroup()
+    {
+        ImGui::PopItemWidth();
+        ImGui::NextColumn();
+        s_CheckboxCount = 0;
+    }
+
 
 
 

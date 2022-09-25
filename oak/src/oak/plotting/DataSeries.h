@@ -2,10 +2,12 @@
 
 #include "oakpch.h"
 #include "oak/core/UUID.h"
+#include "implot.h"
 
     
 namespace Oak
 {  
+
     template<typename T>
     struct DataSeries : public Oak::RefCounted
     {
@@ -17,8 +19,10 @@ namespace Oak
         std::vector<T>      buff;
         std::vector<T>      x;
         std::vector<T>      y;
+        ImVec4              Color;
 
-        DataSeries() : Buffersize(0) {}
+
+        DataSeries() : Buffersize(0) , Color(ImVec4(0,0,0,0)) {}
         DataSeries(uint32_t _buffersize);
         DataSeries(const char* _name, uint32_t _buffersize);
         ~DataSeries();
@@ -41,7 +45,7 @@ namespace Oak
     
     template<typename T>
     DataSeries<T>::DataSeries(uint32_t _buffersize)
-        : SeriesID(++idGenerator), Buffersize(_buffersize)
+        : SeriesID(++idGenerator), Buffersize(_buffersize), Color(ImPlot::GetColormapColor(SeriesID))
     {
         OAK_CORE_TRACE_TAG("DataSeries","Created with size {0}", Buffersize );
         buff.reserve(Buffersize);
@@ -53,7 +57,7 @@ namespace Oak
 
     template<typename T>
     DataSeries<T>::DataSeries(const char* _name, uint32_t _buffersize)
-        : SeriesID(++idGenerator), Name(_name), Buffersize(_buffersize)
+        : SeriesID(++idGenerator), Name(_name), Buffersize(_buffersize), Color(ImPlot::GetColormapColor(SeriesID))
     {
         OAK_CORE_TRACE_TAG("DataSeries", "Created with size {0}, ID {1}, Name '{2}'", Buffersize, SeriesID, Name);  
         buff.reserve(Buffersize);
@@ -69,14 +73,14 @@ namespace Oak
 
     template<typename T>
     DataSeries<T>::DataSeries(const DataSeries<T>& other)
-        : SeriesID(other.SeriesID), Name(other.Name), Buffersize(other.Buffersize), Offset(other.Offset), x(other.x), y(other.y)
+        : SeriesID(other.SeriesID), Name(other.Name), Buffersize(other.Buffersize), Offset(other.Offset), x(other.x), y(other.y), Color(other.Color)
     {
         OAK_CORE_TRACE_TAG("DataSeries", "Copied {0} ('{1}')", SeriesID, Name);
     }
     
     template<typename T>
     DataSeries<T>::DataSeries(DataSeries<T>&& other) noexcept
-        : SeriesID(other.SeriesID), Name(other.Name), Buffersize(other.Buffersize), Offset(other.Offset)
+        : SeriesID(other.SeriesID), Name(other.Name), Buffersize(other.Buffersize), Offset(other.Offset), Color(other.Color)
     {
         
         std::move(other.x.begin(), other.x.end(), x.begin());
@@ -90,6 +94,7 @@ namespace Oak
         other.buff.clear();
         other.x.clear();
         other.y.clear();
+        other.Color = ImVec4(0, 0, 0, 0);
     }
 
     template<typename T>
@@ -101,6 +106,7 @@ namespace Oak
         Offset = other.Offset;
         x = other.x;
         y = other.y;
+        Color = other.Color;
         OAK_CORE_TRACE_TAG("DataSeries", "copy assigning {0} ('{1}')", SeriesID, Name);
         return *this;
     }
@@ -114,6 +120,7 @@ namespace Oak
         Offset = other.Offset;
         x = other.x;
         y = other.y;
+        Color = other.Color;
         OAK_CORE_TRACE_TAG("DataSeries", "copy assigning {0} ('{1}')", SeriesID, Name);
         return *this;
     }
@@ -129,6 +136,10 @@ namespace Oak
             Offset     = std::move(other.Offset);
             std::move(other.x.begin(), other.x.end(), x.begin());
             std::move(other.y.begin(), other.y.end(), y.begin());
+            Color.x = std::move(other.Color.x);
+            Color.y = std::move(other.Color.y);
+            Color.z = std::move(other.Color.z);
+            Color.w = std::move(other.Color.w);
 
             other.SeriesID = 0;
             other.Name = "";
@@ -137,6 +148,7 @@ namespace Oak
             other.buff.clear();
             other.x.clear();
             other.y.clear();
+            other.Color = ImVec4(0, 0, 0, 0)
         }
         OAK_CORE_TRACE_TAG("DataSeries", "Move assigning {0} ('{1}')", SeriesID, Name);
         return *this;
@@ -153,6 +165,8 @@ namespace Oak
         }
         else
         {
+            if (Buffersize == 0)
+                return;
             x[Offset] = _x;
             y[Offset] = _y;
             Offset = (Offset + 1) % Buffersize;
