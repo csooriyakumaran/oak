@@ -3,6 +3,6 @@
 
 namespace Oak {
 
-	Scope<RendererAPI> RenderCommand::s_RendererAPI = RendererAPI::Create();
+	wi::Scope<RendererAPI> RenderCommand::s_RendererAPI = RendererAPI::Create();
 
 }

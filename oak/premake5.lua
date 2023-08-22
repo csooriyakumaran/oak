@@ -15,11 +15,14 @@ project "Oak"
     { 
         "src/**.h", 
         "src/**.cpp",
+        "include/**.h"
     }
 
     includedirs
     {  
         "src",
+        "../../wi/wi/src", 
+        "../../wi/wi/include", 
         "../vendor/glad/include",
         "../vendor/glfw/include",
         "../vendor/glm",
@@ -33,6 +36,7 @@ project "Oak"
 
     links
     {
+        "wi",
         "glad",
         "GLFW",
         "opengl32",
@@ -44,22 +48,24 @@ project "Oak"
     defines
     {
         "GLFW_INCLUDE_NONE",
-        "_CRT_SECURE_NO_WARNINGS"
+        "_USE_MATH_DEFINES",
+        "_CRT_SECURE_NO_WARNINGS",
+        "_CRT_NONSTDC_NO_DEPRECATE",
     }
 
 
     filter "system:windows"
         systemversion "latest"
-        defines "OAK_PLATFORM_WINDOWS"
+        defines "WI_PLATFORM_WINDOWS"
 
     filter  "configurations:Debug" 
-        defines { "OAK_DEBUG" }
+        defines { "WI_DEBUG" }
         symbols "On"
 
     filter  "configurations:Release"
-        defines { "OAK_RELEASE" }
+        defines { "WI_RELEASE" }
         optimize "On"
 
     filter  "configurations:Dist"
-        defines { "OAK_DIST" }
+        defines { "WI_DIST" }
         optimize "On"

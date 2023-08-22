@@ -13,7 +13,7 @@ namespace Oak::UI::Colours
 		constexpr auto compliment				= IM_COL32(78, 151, 166, 255);
 		constexpr auto background				= IM_COL32(36, 36, 36, 255);
 		constexpr auto backgroundDark			= IM_COL32(26, 26, 26, 255);
-		constexpr auto titlebar					= IM_COL32(21, 21, 21, 255);
+		constexpr auto titlebar					= IM_COL32(36, 36, 36, 255);
 		constexpr auto propertyField			= IM_COL32(15, 15, 15, 255);
 		constexpr auto text						= IM_COL32(192, 192, 192, 255);
 		constexpr auto textBrighter				= IM_COL32(210, 210, 210, 255);
@@ -28,6 +28,11 @@ namespace Oak::UI::Colours
 		//constexpr auto backgroundPopup			= IM_COL32(63, 73, 77, 255); // in between
 		//constexpr auto backgroundPopup			= IM_COL32(63, 77, 76, 255); // most green
 		constexpr auto backgroundPopup			= IM_COL32(50, 50, 50, 255); // most blue
+	}
+
+	static ImU32 ImVec4toImU32(ImVec4 color)
+	{
+		return IM_COL32(color.x * 255, color.y * 255, color.z * 255, color.w * 255);
 	}
 
 }

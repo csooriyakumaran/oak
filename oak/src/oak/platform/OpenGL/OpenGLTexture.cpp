@@ -57,7 +57,7 @@ namespace Oak {
 			m_InternalFormat = internalFormat;
 			m_DataFormat = dataFormat;
 
-			OAK_CORE_ASSERT(internalFormat & dataFormat, "Format not supported!");
+			CORE_ASSERT(internalFormat & dataFormat, "Format not supported!");
 
 			glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
 			glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);
@@ -76,7 +76,7 @@ namespace Oak {
 
 	OpenGLTexture2D::~OpenGLTexture2D()
 	{
-		OAK_CORE_TRACE_TAG("~OpenGLTexture2D", "Deleting Texture ID {0}", m_RendererID);
+		LOG_CORE_TRACE_TAG("~OpenGLTexture2D", "Deleting Texture ID {0}", m_RendererID);
 		glDeleteTextures(1, &m_RendererID);
 	}
 
@@ -84,7 +84,7 @@ namespace Oak {
 	{
 
 		uint32_t bpp = m_DataFormat == GL_RGBA ? 4 : 3;
-		OAK_CORE_ASSERT(size == m_Width * m_Height * bpp, "Data must be entire texture!");
+		CORE_ASSERT(size == m_Width * m_Height * bpp, "Data must be entire texture!");
 		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
 	}
 

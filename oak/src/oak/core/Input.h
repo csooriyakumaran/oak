@@ -16,5 +16,6 @@ namespace Oak {
 		static glm::vec2 GetMousePosition();
 		static float GetMouseX();
 		static float GetMouseY();
+		static CursorMode GetCursorMode();
 	};
 }

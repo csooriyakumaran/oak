@@ -1,5 +1,6 @@
 #include "oakpch.h"
 #include "oak/core/Input.h"
+#include "WindowsWindow.h"
 
 #include "oak/core/Application.h"
 #include <GLFW/glfw3.h>
@@ -37,6 +38,12 @@ namespace Oak {
 	float Input::GetMouseY()
 	{
 		return GetMousePosition().y;
+	}
+
+	CursorMode Input::GetCursorMode()
+	{
+		auto& window = static_cast<WindowsWindow&>(Application::Get().GetWindow());
+		return (CursorMode)(glfwGetInputMode(static_cast<GLFWwindow*>(window.GetNativeWindow()), GLFW_CURSOR) - GLFW_CURSOR_NORMAL);
 	}
 
 }

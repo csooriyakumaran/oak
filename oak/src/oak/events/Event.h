@@ -8,10 +8,11 @@ namespace Oak{
     {
         None = 0, 
 		WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
-		WindowMinimize, WindowMaximize, WindowRestore, 
+		WindowMinimize, WindowMaximize, WindowRestore, WindowTitleBarHitTest,
 		AppTick, AppUpdate, AppRender,
 		KeyPressed, KeyReleased, KeyTyped,
-		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
+		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled,
+		DataStreamEvent, DataClearEvent, DataRecordEvent,  DataSeriesCreateEvent, DataSeriesRemoveEvent
     };
 
 	enum EventCategory
@@ -21,7 +22,8 @@ namespace Oak{
 		EventCategoryInput          = 1 << 1,
 		EventCategoryKeyboard       = 1 << 2,
 		EventCategoryMouse          = 1 << 3,
-		EventCategoryMouseButton    = 1 << 4
+		EventCategoryMouseButton    = 1 << 4,
+		EventCategoryData           = 1 << 5, 
 	};
 
 #define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::type; }\

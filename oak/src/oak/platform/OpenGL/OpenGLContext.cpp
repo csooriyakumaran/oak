@@ -19,10 +19,10 @@ namespace Oak {
 		glfwMakeContextCurrent(m_WindowHandle);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
-		OAK_CORE_INFO("OpenGL Info:");
-		OAK_CORE_INFO("  Vendor: {0}", glGetString(GL_VENDOR));
-		OAK_CORE_INFO("  Renderer: {0}", glGetString(GL_RENDERER));
-		OAK_CORE_INFO("  Version: {0}", glGetString(GL_VERSION));
+		LOG_CORE_INFO("OpenGL Info:");
+		LOG_CORE_INFO("  Vendor: {0}",   reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
+		LOG_CORE_INFO("  Renderer: {0}", reinterpret_cast<const char*>(glGetString(GL_RENDERER)));
+		LOG_CORE_INFO("  Version: {0}",  reinterpret_cast<const char*>(glGetString(GL_VERSION)));
 
 	}
 

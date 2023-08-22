@@ -143,7 +143,7 @@ namespace Oak
 			return false;
 
 		std::string themeName = data["THEME"].as<std::string>();
-		OAK_CORE_TRACE_TAG("ImGuiStyleSerializer::Deserialize","Loading theme '{0}'", themeName);
+		LOG_CORE_TRACE_TAG("ImGuiStyleSerializer::Deserialize","Loading theme '{0}'", themeName);
 
 		if (data["STYLE"])
 		{

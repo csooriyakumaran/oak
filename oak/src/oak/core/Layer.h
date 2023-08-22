@@ -1,7 +1,6 @@
 #pragma once
 
-#include "oak/core/Ref.h"
-#include "oak/core/Timestep.h"
+#include "oakpch.h"
 #include "oak/events/Event.h"
 
 
@@ -16,7 +15,7 @@ namespace Oak {
 
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
-		virtual void OnUpdate(Timestep ts) {}
+		virtual void OnUpdate(wi::Timestep ts) {}
 		virtual void OnUIRender() {}
 		virtual void OnEvent(Event& event) {}
 

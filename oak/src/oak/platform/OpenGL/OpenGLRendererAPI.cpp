@@ -16,10 +16,10 @@ namespace Oak {
 	{
 		switch (severity)
 		{
-			case GL_DEBUG_SEVERITY_HIGH:         OAK_CORE_FATAL_TAG("OpenGLRendererAPI", message); return;
-			case GL_DEBUG_SEVERITY_MEDIUM:       OAK_CORE_ERROR_TAG("OpenGLRendererAPI", message); return;
-			case GL_DEBUG_SEVERITY_LOW:          OAK_CORE_WARN_TAG("OpenGLRendererAPI", message); return;
-			case GL_DEBUG_SEVERITY_NOTIFICATION: OAK_CORE_TRACE_TAG("OpenGLRendererAPI", message); return;
+			case GL_DEBUG_SEVERITY_HIGH:         LOG_CORE_FATAL_TAG("OpenGLRendererAPI", message); return;
+			case GL_DEBUG_SEVERITY_MEDIUM:       LOG_CORE_ERROR_TAG("OpenGLRendererAPI", message); return;
+			case GL_DEBUG_SEVERITY_LOW:          LOG_CORE_WARN_TAG("OpenGLRendererAPI", message); return;
+			case GL_DEBUG_SEVERITY_NOTIFICATION: LOG_CORE_TRACE_TAG("OpenGLRendererAPI", message); return;
 		}
 		
 		// HZ_CORE_CRITIAL(false, "Unknown severity leve!");
@@ -28,13 +28,13 @@ namespace Oak {
 	void OpenGLRendererAPI::Init()
 	{
 
-	#ifdef OAK_DEBUG
+	#ifdef WI_DEBUG
 		glEnable(GL_DEBUG_OUTPUT);
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 		glDebugMessageCallback(OpenGLMessageCallback, nullptr);
 		
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
-	#endif
+	#endif // WI_DEBUG
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

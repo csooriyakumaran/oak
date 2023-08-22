@@ -34,7 +34,7 @@ namespace Oak {
 		s_Watching = true;
 		DWORD threadId;
 		s_WatcherThread = CreateThread(NULL, 0, Watch, 0, 0, &threadId);
-		OAK_CORE_ASSERT(s_WatcherThread != NULL);
+		CORE_ASSERT(s_WatcherThread != NULL);
 		SetThreadDescription(s_WatcherThread, L"Hazel FileSystemWatcher");
 	}
 
@@ -162,7 +162,7 @@ namespace Oak {
 
 		if (directoryHandle == INVALID_HANDLE_VALUE)
 		{
-			OAK_CORE_VERIFY(false, "Failed to open directory!");
+			CORE_VERIFY(false, "Failed to open directory!");
 			return 0;
 		}
 

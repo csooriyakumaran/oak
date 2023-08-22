@@ -4,7 +4,7 @@
 
 namespace Oak {
 
-	Scope<Renderer::SceneData> Renderer::s_SceneData = CreateScope<Renderer::SceneData>();
+	wi::Scope<Renderer::SceneData> Renderer::s_SceneData = wi::CreateScope<Renderer::SceneData>();
 
 	void Renderer::Init()
 	{

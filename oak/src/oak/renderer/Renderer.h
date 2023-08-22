@@ -27,6 +27,6 @@ namespace Oak {
 			glm::mat4 ViewProjectionMatrix;
 		};
 
-		static Scope<SceneData> s_SceneData;
+		static wi::Scope<SceneData> s_SceneData;
 	};
 }

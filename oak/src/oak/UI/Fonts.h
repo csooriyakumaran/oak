@@ -40,12 +40,12 @@ namespace Oak
 				std::string key = GenerateFontKey(name, size);
 				if (s_Fonts.find(key) != s_Fonts.end())
 				{
-					OAK_CORE_WARN_TAG("UI::Fonts", "Font with name {0} already exists with size {1}", name, size);
+					LOG_CORE_WARN_TAG("UI::Fonts", "Font with name {0} already exists with size {1}", name, size);
 					return;
 				}
 				ImGuiIO& io = ImGui::GetIO();
 				ImFont* font = io.Fonts->AddFontFromFileTTF(filepath.c_str(), size, nullptr, GetGlyphRangeGreek());
-				OAK_CORE_VERIFY(font, "Faied to load font from file");
+				CORE_VERIFY(font, "Faied to load font from file");
 				s_Fonts[key] = font;
 
 				if (isDefault)
@@ -57,7 +57,7 @@ namespace Oak
 				std::string key = GenerateFontKey(name, size);
 				if (s_Fonts.find(key) == s_Fonts.end())
 				{
-					OAK_CORE_ERROR_TAG("UI::Fonts", "No font named {} found in the font library. Add font from .ttf file", name);
+					LOG_CORE_ERROR_TAG("UI::Fonts", "No font named {} found in the font library. Add font from .ttf file", name);
 					return nullptr;
 				}
 				return s_Fonts[key];

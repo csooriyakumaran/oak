@@ -15,7 +15,7 @@ namespace Oak
 
 	ConsolePanel::ConsolePanel()
 	{
-		OAK_CORE_ASSERT(s_Instance == nullptr);
+		CORE_ASSERT(s_Instance == nullptr);
 		s_Instance = this;
 	}
 
@@ -98,12 +98,12 @@ namespace Oak
 			ImGui::PopStyleVar();
 			ImGui::EndPopup();
 		}
-		ImGui::SameLine( ImGui::GetContentRegionAvail().x - (2.0 + (float)m_ShowFilterButtons * 5.0) * buttonwidth);
+		ImGui::SameLine( ImGui::GetContentRegionAvail().x - (2.0f + (float)m_ShowFilterButtons * 5.0f) * buttonwidth);
 		if (ImGui::Button("OPTIONS", buttonSize))
 			ImGui::OpenPopup("OPTIONS");
 		
 		
-		ImGui::SameLine( ImGui::GetContentRegionAvail().x - ( 1.0 + (float)m_ShowFilterButtons * 5.0 ) * buttonwidth );
+		ImGui::SameLine( ImGui::GetContentRegionAvail().x - ( 1.0f + (float)m_ShowFilterButtons * 5.0f ) * buttonwidth );
 		if (ImGui::Button("FILTER ...", buttonSize))
 		{
 			m_ShowFilterButtons ^= true;
@@ -113,7 +113,7 @@ namespace Oak
 		{
 			int button_col_pop = 0;
 			//------------------------------------------------------------------------
-			ImGui::SameLine(ImGui::GetContentRegionAvail().x - 5.0 * (buttonwidth));
+			ImGui::SameLine(ImGui::GetContentRegionAvail().x - 5.0f * (buttonwidth));
 			ImGui::PushStyleColor(ImGuiCol_Text, TRACE_COL); button_col_pop++;
 			if ((m_MessageFilters & (int16_t)ConsoleMessage::Category::Trace))
 			{
@@ -213,7 +213,7 @@ namespace Oak
 			const auto& sel_msg = m_SelectedMessages;
 			if (m_MessageFilters & (int16_t)msg.GetCategory())
 			{
-				if ( std::string(m_TextFilter).empty() || (msg.GetMessage().find(m_TextFilter) != std::string::npos) )
+				if ( std::string(m_TextFilter).empty() || (msg.GetConsoleMessage().find(m_TextFilter) != std::string::npos) )
 				{
 					ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(5, 5)); style_pop_count++;
 
@@ -248,7 +248,7 @@ namespace Oak
 				
 					if (m_SelectedMessages.find(i) != m_SelectedMessages.end())
 					{
-						ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(1,1,1,0.1)); color_pop_count++;
+						ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(1.0f,1.0f,1.0f,0.1f)); color_pop_count++;
 					}
 					ImGui::BeginChild(i + 1, ImVec2(0, ImGui::GetFontSize() * 1.0F), false, ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar);// | ImGuiWindowFlags_AlwaysUseWindowPadding);
 
@@ -279,7 +279,7 @@ namespace Oak
 									m_SelectedMessages.clear();
 									m_SelectedMessages[end_idx] = &m_MessageBuffer[end_idx];
 								}
-								for (int idx = end_idx; idx <= i; idx++)
+								for (uint32_t idx = end_idx; idx <= i; idx++)
 									m_SelectedMessages[idx] = &m_MessageBuffer[idx];
 							}
 							if (i <= begin_idx)
@@ -289,7 +289,7 @@ namespace Oak
 									m_SelectedMessages.clear();
 									m_SelectedMessages[begin_idx] = &m_MessageBuffer[begin_idx];
 								}
-								for (int idx = i; idx <= begin_idx; idx++)
+								for (uint32_t idx = i; idx <= begin_idx; idx++)
 								{
 									m_SelectedMessages[idx] = &m_MessageBuffer[idx];
 								}
@@ -302,7 +302,7 @@ namespace Oak
 						}
 					}
 
-					std::string messageText = msg.GetMessage();
+					std::string messageText = msg.GetConsoleMessage();
 
 					if (ImGui::BeginPopupContextWindow("##MESSAGECONTEXTMENU"))
 					{
@@ -313,7 +313,7 @@ namespace Oak
 							std::stringstream ss;
 							for (const auto& [idx, selected] : m_SelectedMessages)
 							{
-								ss << selected->GetMessage().c_str();
+								ss << selected->GetConsoleMessage().c_str();
 							}
 							ImGui::SetClipboardText(ss.str().c_str());
 						}
@@ -369,7 +369,7 @@ namespace Oak
 					ImGui::SameLine();
 					ImGui::Text(LevelToString(msg->GetCategory()));
 					ImGui::SameLine();
-					ImGui::TextUnformatted(msg->GetMessage().c_str());
+					ImGui::TextUnformatted(msg->GetConsoleMessage().c_str());
 				}
 
 			}

@@ -27,7 +27,7 @@ namespace Oak {
 		virtual void SetLineWidth(float width) = 0;
 
 		static API GetAPI() { return s_API; }
-		static Scope<RendererAPI> Create();
+		static wi::Scope<RendererAPI> Create();
 	private:
 		static API s_API;
 	};

@@ -1,8 +1,6 @@
 #pragma once
 
 #include "oak/core/Base.h"
-#include "oak/core/Log.h"
-#include "oak/core/Hash.h"
 
 #include "oak/UI/Panel.h"
 
@@ -10,6 +8,7 @@
 
 namespace Oak
 {
+    using namespace wi;
     struct PanelData
     {
         const char* ID = "";
@@ -27,7 +26,7 @@ namespace Oak
     class PanelManager
     {
     public:
-        PanelManager() = default;
+        PanelManager() {}
         ~PanelManager()
         {
             for (auto& map : m_Panels)
@@ -38,13 +37,12 @@ namespace Oak
         Ref<TPanel> AddPanel(PanelCategory category, const PanelData& panelData)
         {
             static_assert(std::is_base_of<Panel, TPanel>::value, "PanelManager::AddPanel requires TPanel to inherit from Oak::Panel");
-
             auto& panelMap = m_Panels[(size_t)category];
 
             uint32_t id = Hash::GenerateFNVHash(panelData.ID);
             if (panelMap.find(id) != panelMap.end())
             {
-                OAK_CORE_ERROR_TAG("PannelManager::AddPanel", "A panel with id '{0}' has already been added.", panelData.ID);
+                LOG_CORE_ERROR_TAG("PannelManager::AddPanel", "A panel with id '{0}' has already been added.", panelData.ID);
                 return nullptr;
             }
 
@@ -77,7 +75,7 @@ namespace Oak
                     continue;
                 return panelMap.at(id).Panel.As<TPanel>();
             }
-            OAK_CORE_ERROR_TAG("PanelManager::GetPanel", "Couldn't find panel with id '{0}'", strID);
+            LOG_CORE_ERROR_TAG("PanelManager::GetPanel", "Couldn't find panel with id '{0}'", strID);
             return nullptr;
         }
 
@@ -90,7 +88,7 @@ namespace Oak
                     continue;
                 return panelMap.at(id).Name;
             }
-            OAK_CORE_ERROR_TAG("PanelManager::GetPanelName", "Could not fine panel with id {}", strID);
+            LOG_CORE_ERROR_TAG("PanelManager::GetPanelName", "Could not fine panel with id {}", strID);
             return nullptr;
         }
 
@@ -103,6 +101,8 @@ namespace Oak
                     continue;
                 return panelMap.at(id).IsOpen;
             }
+            LOG_CORE_WARN_TAG("PanelManager::IsPanelOpen", "No panels found");
+            return false;
         }
 
         void TogglePanel(const char* strID)
@@ -130,7 +130,7 @@ namespace Oak
                 return;
             }
 
-            OAK_CORE_ERROR_TAG("PanelManager::RemovePanel", "Couldn't find panel with id '{0}'", strID);
+            LOG_CORE_ERROR_TAG("PanelManager::RemovePanel", "Couldn't find panel with id '{0}'", strID);
         }
 
         void OnUIRender()
@@ -157,6 +157,7 @@ namespace Oak
                     panelData.Panel->OnEvent(e);
             }
         }
+
 
         //void OnProjectChanged(const Ref<Project>& project)
         //{

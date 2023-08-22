@@ -81,7 +81,7 @@ namespace Oak
     class Node
     {
     public:
-        Node(bool open) : m_open(open), uuid(UUID()) {}
+        Node(bool open) : m_open(open), uuid(wi::UUID()) {}
         virtual ~Node() = default;
         
         virtual void SetLocalStyle() {}
@@ -94,12 +94,12 @@ namespace Oak
         
         void SetName(const std::string& name) { m_Name = name; }
         const std::string GetName() { return m_Name; }
-        UUID GetID() const { return uuid; }
+        wi::UUID GetID() const { return uuid; }
         
         bool* p_open = &m_open;
 
     private:
-        UUID uuid;
+        wi::UUID uuid;
         bool m_open = false;
         
         std::string m_Name = "Node";

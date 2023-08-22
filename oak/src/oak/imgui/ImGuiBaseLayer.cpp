@@ -1,5 +1,6 @@
 #include "oakpch.h"
 #include "oak/imgui/ImGuiBaseLayer.h"
+#include "oak/imgui/ImGuiUtils.h"
 
 #include "imgui.h"
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
@@ -96,30 +97,9 @@ namespace Oak {
 	}
     void ImGuiBaseLayer::Begin()
 	{
-
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-
-		ImGuiViewport* viewport = ImGui::GetMainViewport();
-        ImGui::SetNextWindowPos(viewport->WorkPos);
-        ImGui::SetNextWindowSize(viewport->WorkSize);
-        ImGui::SetNextWindowViewport(viewport->ID);
-		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_AutoHideTabBar | ImGuiDockNodeFlags_PassthruCentralNode | ImGuiDockNodeFlags_NoWindowMenuButton;
-		ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-        window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
-		window_flags |= ImGuiWindowFlags_NoBackground;
-		window_flags |= ImGuiWindowFlags_NoDocking;
-
-		ImGui::Begin("Main Dockspace",NULL, window_flags);
-
-		ImGuiIO& io = ImGui::GetIO();
-
-		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
-		{
-			ImGuiID m_dockspace_id = ImGui::GetID("Main Dockspace");
-			ImGui::DockSpace(m_dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
-		}
 	}
 
     void ImGuiBaseLayer::End()

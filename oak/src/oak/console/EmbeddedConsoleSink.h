@@ -2,10 +2,13 @@
 #include "oak/console/ConsoleMessage.h"
 #include "oak/console/ConsolePanel.h"
 
+#include "spdlog/spdlog.h"
 #include "spdlog/sinks/base_sink.h"
 #include <mutex>
+#include <vector>
 
-namespace Oak{
+namespace Oak
+{
 
 	class EmbeddedConsoleSink : public spdlog::sinks::base_sink<std::mutex>
 	{
@@ -61,7 +64,7 @@ namespace Oak{
 				return ConsoleMessage::Category::Fatal;
 			}
 
-			OAK_CORE_ASSERT("Invalid Message Category!");
+			CORE_ASSERT("Invalid Message Category!");
 			return ConsoleMessage::Category::None;
 		}
 

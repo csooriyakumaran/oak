@@ -5,8 +5,8 @@
 #include <string>
 
 namespace Oak {
-
-	class Texture : public RefCounted
+	using namespace wi;
+	class Texture : public wi::RefCounted
 	{
 	public:
 		virtual ~Texture() = default;

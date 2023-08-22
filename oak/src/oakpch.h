@@ -1,8 +1,10 @@
 #pragma once
 
-#ifdef OAK_PLATFORM_WINDOWS
+#include "wi.h"
+
+#ifdef WI_PLATFORM_WINDOWS
 	#include <Windows.h>
-#endif // OAK_PLATFORM_WINDOWS
+#endif // WI_PLATFORM_WINDOWS
 
 #include <iostream>
 #include <memory>
@@ -10,6 +12,8 @@
 #include <algorithm>
 #include <functional>
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <stdint.h>
 #include <string>
 #include <sstream>
@@ -24,7 +28,6 @@
 
 
 #include <oak/core/Base.h>
-#include <oak/core/Log.h>
 #include <oak/events/Event.h>
 
 

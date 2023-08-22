@@ -10,9 +10,10 @@ namespace Oak {
 	class WindowsWindow : public Window
 	{
 	public:
-		WindowsWindow(const WindowProps& props);
+		WindowsWindow(const WindowSpecification& props);
 		virtual ~WindowsWindow();
 
+		virtual void Init() override;
 		void OnUpdate() override;
 
 		unsigned int GetWidth() const override { return m_Data.Width; }
@@ -24,7 +25,10 @@ namespace Oak {
 		// Window attributes
 		void SetEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
 		void SetVSync(bool enabled) override;
+		void SetResizable(bool resizable) const override;
+		void CenterWindow() override;
 		bool IsVSync() const override { return m_Data.VSync; }
+		bool IsMaximized() const override { return (bool)glfwGetWindowAttrib(m_Window, GLFW_MAXIMIZED); }
 		void Minimize() override;
 		void Maximize() override;
 		void Restore() override;
@@ -36,11 +40,13 @@ namespace Oak {
 
 
 	private:
-		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();
 	private:
 		GLFWwindow* m_Window;
+		GLFWcursor* m_ImGuiMouseCursors[9] = { 0 };
+		WindowSpecification m_Specification;
 		std::unique_ptr<GraphicsContext> m_Context;
+
 
 		struct WindowData
 		{

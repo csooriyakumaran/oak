@@ -1,6 +1,5 @@
 #pragma once
 
-#include "oak/core/Log.h"
 #include "oak/UI/Panel.h"
 #include "oak/console/ConsoleMessage.h"
 

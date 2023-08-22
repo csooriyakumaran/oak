@@ -1,6 +1,9 @@
 #include "oakpch.h"
+
 #include "FileSystem.h"
 #include "spdlog/fmt/ostr.h"
+
+#include <shellapi.h>
 
 namespace Oak
 {

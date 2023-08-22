@@ -1,8 +1,7 @@
 #pragma once
 
-#include "oak/core/base.h"
-
 #include <string>
+#include <stdint.h>
 
 namespace Oak {
 
@@ -28,7 +27,7 @@ namespace Oak {
 			: m_MessageID(std::hash<std::string>()(message)), m_Message(message), m_Count(1), m_Category(category) {}
 
 		uint64_t GetMessageID() const { return m_MessageID; }
-		const std::string& GetMessage() const { return m_Message; }
+		const std::string& GetConsoleMessage() const { return m_Message; }
 		uint32_t GetCount() const { return m_Count; }
 		Category  GetCategory() const { return m_Category; }
 

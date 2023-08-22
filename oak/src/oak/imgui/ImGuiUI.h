@@ -17,6 +17,7 @@
 #endif
 #include "imgui_internal.h"
 
+#include <numeric>
 
 namespace Oak::UI
 {
@@ -64,10 +65,13 @@ namespace Oak::UI
     };
     static std::unordered_map<std::string, MessageBoxData> s_MessageBoxes;
 
+ 
+
+
     inline bool ImageButton(Ref<Texture2D> tex, ImVec2& size, int pad = 0)
     {
         
-        ImTextureID user_texture_id = Utils::GetImTextureID(tex);
+        ImTextureID user_texture_id = GetImTextureID(tex);
         ImGuiContext* g = ImGui::GetCurrentContext();
         ImGuiWindow* window = g->CurrentWindow;
         if (window->SkipItems)
@@ -132,7 +136,7 @@ namespace Oak::UI
             {
                 if (messageBoxData.Flags & OakMsgBoxFlag_UserFunc)
                 {
-                    OAK_CORE_VERIFY(messageBoxData.UserRenderFunction, "No render function provided for message box!");
+                    CORE_VERIFY(messageBoxData.UserRenderFunction, "No render function provided for message box!");
                     messageBoxData.UserRenderFunction();
                 }
                 else
@@ -190,6 +194,8 @@ namespace Oak::UI
 		}
 	}
 
+
+
     static bool PropertyGridHeader(const std::string& name, bool openByDefault = true)
     {
         ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_Framed
@@ -205,8 +211,8 @@ namespace Oak::UI
         const float framePaddingX = 2.0f;
         const float framePaddingY = 5.0f; // affects height of the header
 
-        Utils::ScopedStyle headerRounding(ImGuiStyleVar_FrameRounding, 0.0f);
-        Utils::ScopedStyle headerPaddingAndHeight(ImGuiStyleVar_FramePadding, ImVec2{ framePaddingX, framePaddingY });
+        ScopedStyle headerRounding(ImGuiStyleVar_FrameRounding, 0.0f);
+        ScopedStyle headerPaddingAndHeight(ImGuiStyleVar_FramePadding, ImVec2{ framePaddingX, framePaddingY });
 
         //UI::PushID();
         ImGui::PushID(name.c_str());
@@ -224,7 +230,7 @@ namespace Oak::UI
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2.0f, 4.0f));
         ImGui::Unindent(ImGui::GetTreeNodeToLabelSpacing());
         ImGui::Columns(columns);
-        ImGui::SetColumnWidth(0, ImGui::GetWindowContentRegionWidth() * 0.35);
+        ImGui::SetColumnWidth(0, ImGui::GetWindowContentRegionWidth() * 0.35f);
     }
 
     static void EndPropertyGrid()
@@ -564,7 +570,7 @@ namespace Oak::UI
         Draw::ShiftCursorY(2.0f);
         ImGui::PushItemWidth(-1);
 
-        bool modified = ImGui::DragInt2(GenerateID(), glm::value_ptr(value), delta, min, max);
+        bool modified = ImGui::DragInt2(GenerateID(), glm::value_ptr(value), delta, (int)min, (int)max);
 
 
         if (!IsItemDisabled())
@@ -744,6 +750,26 @@ namespace Oak::UI
         return modified;
     }
     
+    static bool PropertyColor(const char* label, glm::vec4& value)
+    {
+        Draw::ShiftCursor(4.0f, 4.0f);
+        ImGui::Text(label);
+        ImGui::NextColumn();
+        Draw::ShiftCursorY(2.0f);
+        ImGui::PushItemWidth(-1);
+
+        bool modified = ImGui::ColorEdit4(GenerateID(), glm::value_ptr(value));
+
+        if (!IsItemDisabled())
+            Draw::DrawItemActivityOutline(2.0f, true, Colours::Theme::accent);
+
+        ImGui::PopItemWidth();
+        ImGui::NextColumn();
+        Draw::Underline();
+
+        return modified;
+    }
+
     static int s_CheckboxCount = 0;
 
     static void BeginCheckboxGroup(const char* label)

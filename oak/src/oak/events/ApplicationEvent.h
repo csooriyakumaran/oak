@@ -48,6 +48,7 @@ namespace Oak {
 	public:
 		WindowMinimizeEvent() = default;
 
+
 		std::string ToString() const override
 		{
 			std::stringstream ss;
@@ -57,6 +58,7 @@ namespace Oak {
 
 		EVENT_CLASS_TYPE(WindowMinimize)
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
+	private:
 	};
 
 	class WindowMaximizeEvent : public Event
@@ -103,12 +105,31 @@ namespace Oak {
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(WindowRestore)
+		EVENT_CLASS_TYPE(WindowMoved)
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 
 	private:
 		unsigned int m_xpos, m_ypos;
 	};
+
+	class WindowTitleBarHitTestEvent : public Event
+	{
+	public:
+		WindowTitleBarHitTestEvent(int x, int y, int& hit)
+			: m_X(x), m_Y(y), m_Hit(hit) {}
+
+		inline int GetX() const { return m_X; }
+		inline int GetY() const { return m_Y; }
+		inline void SetHit(bool hit) { m_Hit = (int)hit; }
+
+		EVENT_CLASS_TYPE(WindowTitleBarHitTest)
+		EVENT_CLASS_CATEGORY(EventCategoryApplication)
+	private:
+		int m_X;
+		int m_Y;
+		int& m_Hit;
+	};
+
 
 	class AppTickEvent : public Event
 	{

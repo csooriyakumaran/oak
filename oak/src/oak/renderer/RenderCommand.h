@@ -32,7 +32,7 @@ namespace Oak {
 			s_RendererAPI->SetLineWidth(width);
 		}
 	private:
-		static Scope<RendererAPI> s_RendererAPI;
+		static wi::Scope<RendererAPI> s_RendererAPI;
 	};
 
 }
